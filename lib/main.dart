@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ones_blog/BecomeStore.dart';
+import 'package:ones_blog/StoreInformation.dart';
 import 'HomePage.dart';
+import 'UserInformation.dart';
 
 void main() {
   runApp(MyApp());

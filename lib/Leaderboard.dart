@@ -1,123 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ones_blog/AboutUs.dart';
-import 'package:ones_blog/Community.dart';
-import 'package:ones_blog/Leaderboard.dart';
-import 'package:ones_blog/LodgingArea.dart';
-import 'package:ones_blog/LoginAccount.dart';
-import 'package:ones_blog/RestaurantArea.dart';
-import 'package:ones_blog/SpotsArea.dart';
 import 'CreateMenu.dart';
-import 'function/BuildButton.dart';
-import 'function/PlaceElement.dart';
+import 'HomePage.dart';
 import 'function/BuildDots.dart';
-import 'function/BuildMenuButton.dart';
 
-class HomePage extends StatefulWidget {
+class Leaderboard extends StatefulWidget {
+  const Leaderboard({Key? key}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _LeaderboardState createState() => _LeaderboardState();
 }
 
-class _HomePageState extends State<HomePage> {
-  bool _verticalList = true;
-  ScrollController _scrollController = ScrollController();
+class _LeaderboardState extends State<Leaderboard> {
   int restaurantCurrentPos = 0, spotsCurrentPos = 0, lodgingCurrentPos = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       endDrawer: CreateMenu(context),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
-            backgroundColor: Color.fromRGBO(197, 213, 212, 1),
+            pinned: true,
+            backgroundColor: Color.fromRGBO(222, 215, 209, 1),
             elevation: 0,
-            toolbarHeight: 70,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                    maintainState: false,
+                  ),
+                );
+              },
+              icon: Image.asset('images/icon/icon.png'),
+            ),
+            toolbarHeight: 125,
+            leadingWidth: 100,
             actions: [
               Builder(
                 builder: (context) => IconButton(
-                  icon: Image.asset("images/element/menu.png"),
+                  icon: Image.asset('images/element/menu.png'),
                   iconSize: 70,
                   onPressed: () => Scaffold.of(context).openEndDrawer(),
                 ),
               ),
             ],
-          )
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(0.0),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                    child: Image.asset(
+                      'images/text/rankWord.png',
+                      height: 55,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Stack(
-                children: [
-                  Container(
-                    height: (MediaQuery.of(context).size.height) - 160,
-                    color: Color.fromRGBO(197, 213, 212, 1),
-                  ),
-                  placeElement(
-                      MediaQuery.of(context).size.height / 40,
-                      MediaQuery.of(context).size.width / 10,
-                      "images/background/croissant.png",
-                      120),
-                  placeElement(
-                      MediaQuery.of(context).size.height / 4.5,
-                      MediaQuery.of(context).size.width / 15,
-                      "images/text/titleWord.png",
-                      300),
-                  placeElement(
-                      MediaQuery.of(context).size.height / 20,
-                      MediaQuery.of(context).size.width / 1.3,
-                      "images/background/strawberry.png",
-                      120),
-                  placeElement(
-                      MediaQuery.of(context).size.height / 2.5,
-                      MediaQuery.of(context).size.width / -8,
-                      "images/background/donut.png",
-                      120),
-                  placeElement(
-                      MediaQuery.of(context).size.height / 1.8,
-                      MediaQuery.of(context).size.width / 1.6,
-                      "images/background/matcha.png",
-                      120),
-                  placeElement(
-                      MediaQuery.of(context).size.height / 1.42,
-                      MediaQuery.of(context).size.width / 8,
-                      "images/background/blueberry.png",
-                      130),
-                ],
-              ),
               Container(
-                height: 1600,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/background/background_body.png"),
-                    alignment: Alignment.topCenter,
-                    repeat: ImageRepeat.repeat,
-                  ),
-                ),
+                color: Color.fromRGBO(222, 215, 209, 1),
+                height: MediaQuery.of(context).size.height + 600,
+                width: MediaQuery.of(context).size.width,
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        buildButtion('餐廳', 80, 48, context, RestaurantArea()),
-                        buildButtion('景點', 80, 48, context, SpotsArea()),
-                        buildButtion('旅宿', 80, 48, context, LodgingArea()),
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    ),
                     SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     Row(
                       children: [
                         SizedBox(
-                          width: 32,
+                          width: 5,
                         ),
                         Image(
-                          image: AssetImage("images/text/restaurant.png"),
-                          width: 100,
+                          image: AssetImage('images/text/restaurant.png'),
+                          width: 80,
                         ),
                       ],
                     ),
@@ -135,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                               restaurantCurrentPos = index;
                             });
                           }),
-                      items: [1, 2, 3, 4, 5].map((i) {
+                      items: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
@@ -157,20 +124,18 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 5,
                     ),
-                    buildDots(restaurantCurrentPos, [1, 2, 3, 4, 5]),
-                    buildButtion(
-                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, RestaurantArea()),
+                    buildDots(restaurantCurrentPos, [1, 2, 3, 4, 5, 6, 7, 8, 9]),
                     SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     Row(
                       children: [
                         SizedBox(
-                          width: 32,
+                          width: 5,
                         ),
                         Image(
-                          image: AssetImage("images/text/spots.png"),
-                          width: 100,
+                          image: AssetImage('images/text/spots.png'),
+                          width: 80,
                         ),
                       ],
                     ),
@@ -188,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                               spotsCurrentPos = index;
                             });
                           }),
-                      items: [1, 2, 3, 4, 5].map((i) {
+                      items: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
@@ -210,20 +175,18 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 5,
                     ),
-                    buildDots(spotsCurrentPos, [1, 2, 3, 4, 5]),
-                    buildButtion(
-                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, SpotsArea()),
+                    buildDots(spotsCurrentPos, [1, 2, 3, 4, 5, 6, 7, 8, 9]),
                     SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     Row(
                       children: [
                         SizedBox(
-                          width: 32,
+                          width: 5,
                         ),
                         Image(
-                          image: AssetImage("images/text/lodging.png"),
-                          width: 100,
+                          image: AssetImage('images/text/lodging.png'),
+                          width: 80,
                         ),
                       ],
                     ),
@@ -241,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                               lodgingCurrentPos = index;
                             });
                           }),
-                      items: [1, 2, 3, 4, 5].map((i) {
+                      items: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
@@ -263,9 +226,7 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 5,
                     ),
-                    buildDots(lodgingCurrentPos, [1, 2, 3, 4, 5]),
-                    buildButtion(
-                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, LodgingArea()),
+                    buildDots(lodgingCurrentPos, [1, 2, 3, 4, 5, 6, 7, 8, 9]),
                   ],
                 ),
               ),
