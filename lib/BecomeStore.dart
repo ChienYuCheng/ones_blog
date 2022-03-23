@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:ones_blog/Constant.dart';
 import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
@@ -42,15 +42,13 @@ class _BecomeStoreState extends State<BecomeStore> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
+                Navigator.of(context).pop(context);
               },
-              icon: Image.asset('images/icon/icon.png'),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.black,
+                size: 40,
+              ),
             ),
             toolbarHeight: 70,
             leadingWidth: 100,
@@ -154,7 +152,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                           ),
                           Text(
                             '選取營業時間',
-                            style: TextStyle(fontSize: 16),
+                            style: contextStyle,
                           ),
                           SizedBox(
                             height: 10.0,
@@ -185,7 +183,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                                     '開始時間',
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color.fromRGBO(185, 153, 98, 1.0),
+                                      color: Color.fromRGBO(241, 208, 10, 1),
                                     ),
                                   ),
                                   Container(
@@ -201,9 +199,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                                       child: TextButton(
                                         child: Text(
                                           '${startTime!.hour.toString()}:${startTime!.minute.toString()}',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16),
+                                          style: contextStyle,
                                         ),
                                         onPressed: () async {
                                           TimeOfDay? newTime =
@@ -214,7 +210,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                                           if (newTime != null) {
                                             setState(() {
                                               startTime = newTime;
-                                            });
+                                            },);
                                           }
                                         },
                                       ),
@@ -228,7 +224,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                                     '結束時間',
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Color.fromRGBO(185, 153, 98, 1.0),
+                                      color: Color.fromRGBO(241, 208, 10, 1),
                                     ),
                                   ),
                                   Container(
@@ -244,9 +240,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                                       child: TextButton(
                                         child: Text(
                                           '${endTime!.hour.toString()}:${endTime!.minute.toString()}',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16),
+                                          style: contextStyle,
                                         ),
                                         onPressed: () async {
                                           TimeOfDay? newTime =
@@ -271,7 +265,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                             children: [
                               Spacer(),
                               TextButton(
-                                child: Text('新增時間'),
+                                child: Text('新增時間', style: contextStyle),
                                 onPressed: () {},
                               ),
                               SizedBox(
@@ -363,7 +357,7 @@ class _BecomeStoreState extends State<BecomeStore> {
         },
         child: Text(
           date,
-          style: TextStyle(color: Colors.black),
+          style: contextStyle
         ),
       ),
     );

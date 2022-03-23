@@ -29,18 +29,15 @@ class _RestaurantAreaState extends State<RestaurantArea> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
+                Navigator.of(context).pop(context);
               },
-              icon: Image.asset('images/icon/icon.png'),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.black,
+                size: 40,
+              ),
             ),
             toolbarHeight: 125,
-            leadingWidth: 100,
             actions: [
               Builder(
                 builder: (context) => IconButton(

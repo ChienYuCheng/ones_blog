@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ones_blog/HomePage.dart';
-import 'package:ones_blog/RestaurantArea.dart';
+import 'package:ones_blog/Constant.dart';
 
-Container buildMenuButton(IconData icon, String buttonName, BuildContext context, Widget pageName) {
+Container buildMenuButton(String route, String buttonName, BuildContext context, Widget pageName, double width) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10.0),
@@ -13,7 +12,7 @@ Container buildMenuButton(IconData icon, String buttonName, BuildContext context
     height: 80,
     child: TextButton(
       onPressed: () {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => pageName,
@@ -23,15 +22,10 @@ Container buildMenuButton(IconData icon, String buttonName, BuildContext context
       },
       child: Column(
         children: [
-          Icon(
-            icon,
-            size: 28,
-            color: Colors.black,
-          ),
-          Padding(padding: const EdgeInsets.only(top: 5)),
+          Image(image: AssetImage(route), width: width,),
           Text(
             buttonName,
-            style: TextStyle(color: Colors.black, fontSize: 18),
+            style: titleStyle,
           ),
         ],
       ),

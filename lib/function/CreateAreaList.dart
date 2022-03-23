@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ones_blog/Constant.dart';
 
 TextButton CreateAreaList(String title, String address, String route) {
   return TextButton(
@@ -31,7 +32,7 @@ TextButton CreateAreaList(String title, String address, String route) {
               ),
               Text(
                 title,
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: titleStyle,
               ),
             ],
           ),
@@ -45,16 +46,16 @@ TextButton CreateAreaList(String title, String address, String route) {
               ),
               Text(
                 address,
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: contextStyle,
               ),
               Spacer(),
               Icon(
                 Icons.star,
-                color: Color.fromRGBO(185, 153, 98, 1.0),
+                color: Color.fromRGBO(241, 208, 10, 1),
               ),
               Text(
                 '4.5',
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: contextStyle,
               ),
               SizedBox(
                 width: 5.0,

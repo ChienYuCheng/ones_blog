@@ -57,6 +57,10 @@ class _LoginAccountState extends State<LoginAccount> {
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
+                    Text(
+                      '歡迎回來',
+                      style: TextStyle(fontSize: 20),
+                    ),
                     SizedBox(
                       height: 30,
                     ),

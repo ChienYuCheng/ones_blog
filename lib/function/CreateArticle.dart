@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:ones_blog/ArticleContent.dart';
+import 'package:ones_blog/Constant.dart';
 
-TextButton CreateArticle(String type, String title, String route) {
+TextButton CreateArticle(String type, String title, String route, BuildContext context) {
   return TextButton(
-    onPressed: () {},
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ArticleContent(),
+          maintainState: false,
+        ),
+      );
+    },
     child: Container(
       // margin: EdgeInsets.only(top: 10.0),
       decoration: BoxDecoration(
@@ -20,14 +30,14 @@ TextButton CreateArticle(String type, String title, String route) {
             children: [
               Text(
                 type,
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: titleStyle,
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
                 title,
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: contextStyle,
               ),
             ],
           ),

@@ -16,7 +16,7 @@ class _UserInformationState extends State<UserInformation> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 4,
       child: Scaffold(
         endDrawer: CreateMenu(context),
@@ -28,18 +28,15 @@ class _UserInformationState extends State<UserInformation> {
               elevation: 0,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                      maintainState: false,
-                    ),
-                  );
+                  Navigator.of(context).pop();
                 },
-                icon: Image.asset('images/icon/icon.png'),
+                icon: Icon(
+                  Icons.arrow_back_rounded,
+                  color: Colors.black,
+                  size: 40,
+                ),
               ),
               toolbarHeight: 270,
-              leadingWidth: 100,
               actions: [
                 Builder(
                   builder: (context) => IconButton(
@@ -55,13 +52,13 @@ class _UserInformationState extends State<UserInformation> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         SizedBox(
                           width: 5,
                         ),
                         CircleAvatar(
-                          radius: 45,
+                          radius: 35,
                           backgroundColor: Colors.white,
                           child: ClipOval(
                             child: Image.asset('images/element/member.png'),
@@ -69,7 +66,7 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                         Column(
                           children: [
-                            Text('我的文章'),
+                            Text('我的文章', style: TextStyle(fontSize: 12),),
                             SizedBox(
                               height: 5,
                             ),
@@ -78,7 +75,7 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                         Column(
                           children: [
-                            Text('喜好店家'),
+                            Text('喜好店家', style: TextStyle(fontSize: 12),),
                             SizedBox(
                               height: 5,
                             ),
@@ -87,7 +84,7 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                         Column(
                           children: [
-                            Text('珍藏文章'),
+                            Text('珍藏文章', style: TextStyle(fontSize: 12),),
                             SizedBox(
                               height: 5,
                             ),
@@ -96,13 +93,14 @@ class _UserInformationState extends State<UserInformation> {
                         ),
                         Column(
                           children: [
-                            Text('成就獎章'),
+                            Text('成就獎章', style: TextStyle(fontSize: 12),),
                             SizedBox(
                               height: 5,
                             ),
                             Text('16'),
                           ],
                         ),
+                        SizedBox(width: 5,),
                       ],
                     ),
                     Row(
@@ -120,21 +118,25 @@ class _UserInformationState extends State<UserInformation> {
                         Tab(
                           child: Image(
                             image: AssetImage('images/element/article.png'),
+                            width: 40,
                           ),
                         ),
                         Tab(
                           child: Image(
                             image: AssetImage('images/element/like.png'),
+                            width: 40,
                           ),
                         ),
                         Tab(
                           child: Image(
                             image: AssetImage('images/element/keep.png'),
+                            width: 40,
                           ),
                         ),
                         Tab(
                           child: Image(
                             image: AssetImage('images/element/medal.png'),
+                            width: 40,
                           ),
                         ),
                       ],
@@ -162,13 +164,13 @@ class _UserInformationState extends State<UserInformation> {
                           height: 20,
                         ),
                         CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg'),
+                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg'),
+                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg'),
+                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg'),
+                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
                       ],
                     ),
                   ),
@@ -190,13 +192,13 @@ class _UserInformationState extends State<UserInformation> {
                           height: 20,
                         ),
                         CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg'),
+                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg'),
+                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg'),
+                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg'),
+                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
                       ],
                     ),
                   ),
@@ -218,13 +220,13 @@ class _UserInformationState extends State<UserInformation> {
                           height: 20,
                         ),
                         CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg'),
+                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg'),
+                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg'),
+                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg'),
+                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
                       ],
                     ),
                   ),
@@ -246,13 +248,13 @@ class _UserInformationState extends State<UserInformation> {
                           height: 20,
                         ),
                         CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg'),
+                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg'),
+                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg'),
+                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg'),
+                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
                       ],
                     ),
                   ),

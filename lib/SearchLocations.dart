@@ -37,13 +37,7 @@ class _SearchLocationsState extends State<SearchLocations> {
                     IconButton(
                       padding: EdgeInsets.only(top: 10, right: 20),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddArticle(),
-                            maintainState: false,
-                          ),
-                        );
+                        Navigator.of(context).pop(context);
                       },
                       icon: Icon(
                         Icons.clear,

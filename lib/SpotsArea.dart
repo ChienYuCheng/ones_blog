@@ -29,18 +29,15 @@ class _SpotsAreaState extends State<SpotsArea> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
+                Navigator.of(context).pop(context);
               },
-              icon: Image.asset('images/icon/icon.png'),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.black,
+                size: 40,
+              ),
             ),
             toolbarHeight: 125,
-            leadingWidth: 100,
             actions: [
               Builder(
                 builder: (context) => IconButton(
@@ -85,14 +82,22 @@ class _SpotsAreaState extends State<SpotsArea> {
                     SizedBox(
                       height: 20,
                     ),
-                    CreateAreaList('阿里磅生態休閒農場', '新北市石門區', 'images/element/test.jpeg'),
-                    CreateAreaList('野柳地質公園', '新北市萬里區', 'images/element/test.jpeg'),
-                    CreateAreaList('雲仙樂園', '新北市烏來區', 'images/element/test.jpeg'),
-                    CreateAreaList('鹿角溪人工濕地', '新北市樹林區', 'images/element/test.jpeg'),
-                    CreateAreaList('新北市立十三行博物館', '新北市八里區', 'images/element/test.jpeg'),
-                    CreateAreaList('白沙灣自然中心', '新北市石門區', 'images/element/test.jpeg'),
-                    CreateAreaList('雙溪平林休閒農場', '新北市雙溪區', 'images/element/test.jpeg'),
-                    CreateAreaList('新北市立鶯歌陶瓷博物館', '新北市鶯歌區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '阿里磅生態休閒農場', '新北市石門區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '野柳地質公園', '新北市萬里區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '雲仙樂園', '新北市烏來區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '鹿角溪人工濕地', '新北市樹林區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '新北市立十三行博物館', '新北市八里區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '白沙灣自然中心', '新北市石門區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '雙溪平林休閒農場', '新北市雙溪區', 'images/element/test.jpeg'),
+                    CreateAreaList(
+                        '新北市立鶯歌陶瓷博物館', '新北市鶯歌區', 'images/element/test.jpeg'),
                   ],
                 ),
               ),

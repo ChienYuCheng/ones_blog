@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/Community.dart';
-import 'package:ones_blog/Leaderboard.dart';
-import 'package:ones_blog/LoginAccount.dart';
+import 'package:ones_blog/Constant.dart';
 import 'package:ones_blog/SearchLocations.dart';
-import 'AboutUs.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
-import 'function/BuildMenuButton.dart';
 import 'function/BuildButton.dart';
 
 class AddArticle extends StatefulWidget {
@@ -32,18 +29,15 @@ class _AddArticleState extends State<AddArticle> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
+                Navigator.of(context).pop(context);
               },
-              icon: Image.asset('images/icon/icon.png'),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.black,
+                size: 40,
+              ),
             ),
             toolbarHeight: 70,
-            leadingWidth: 100,
             actions: [
               Builder(
                 builder: (context) => IconButton(
@@ -76,26 +70,97 @@ class _AddArticleState extends State<AddArticle> {
                           Radius.circular(10.0),
                         ),
                       ),
-                      child: DropdownButton<String>(
-                        value: dropdownValue,
-                        icon: const Icon(FontAwesomeIcons.caretDown),
-                        style: const TextStyle(color: Colors.black),
-                        underline: Container(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                        },
-                        items: <String>['餐廳專區', '景點專區', '旅宿專區']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(fontSize: 18),
-                            ),
+                      child: TextButton(
+                        child: Text('請選擇專區', style: titleStyle),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            isDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: 250,
+                                color: Color.fromRGBO(222, 215, 209, 1),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        children: [
+                                          SizedBox(width: 145),
+                                          Text(
+                                            '選擇專區',
+                                            style: titleStyle),
+                                          Spacer(),
+                                          IconButton(
+                                            padding: EdgeInsets.only(
+                                                top: 10, right: 20),
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            icon: Icon(
+                                              Icons.clear,
+                                              size: 40,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        height: 2.0,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        color: Colors.white,
+                                      ),
+                                      Container(
+                                        height: 65,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            print('餐廳');
+                                          },
+                                          child: Text(
+                                            '餐廳專區',
+                                            style: contextStyle,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 65,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            print('景點');
+                                          },
+                                          child: Text(
+                                            '景點專區',
+                                            style: contextStyle,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 65,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            print('旅宿');
+                                          },
+                                          child: Text(
+                                            '旅宿專區',
+                                            style: contextStyle,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           );
-                        }).toList(),
+                        },
                       ),
                     ),
                     SizedBox(height: 50.0),
@@ -132,30 +197,29 @@ class _AddArticleState extends State<AddArticle> {
                             color: Color.fromRGBO(222, 215, 209, 1),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 20.0, bottom: 10.0),
-                            width: 300,
-                            height: 40,
-                            child: TextButton(
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.mapMarkerAlt,
-                                    color: Colors.redAccent,
-                                  ),
-                                  Spacer(),
-                                ],
-                              ),
-                              onPressed: (){
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SearchLocations(),
-                                    maintainState: false,
-                                  ),
-                                );
-                              },
-                            )
-                          ),
+                              margin: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                              width: 300,
+                              height: 40,
+                              child: TextButton(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.mapMarkerAlt,
+                                      color: Colors.redAccent,
+                                    ),
+                                    Spacer(),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SearchLocations(),
+                                      maintainState: false,
+                                    ),
+                                  );
+                                },
+                              )),
                           Container(
                             height: 2.0,
                             width: 280,
@@ -164,7 +228,7 @@ class _AddArticleState extends State<AddArticle> {
                           Container(
                             margin: EdgeInsets.only(top: 20.0, bottom: 10.0),
                             width: 300,
-                            height: 40,
+                            height: 350,
                             child: TextField(
                               decoration: InputDecoration(
                                 filled: true,
@@ -183,7 +247,7 @@ class _AddArticleState extends State<AddArticle> {
                             height: 100,
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Color.fromRGBO(185, 153, 98, 1.0),
+                                    color: Color.fromRGBO(241, 208, 10, 1),
                                     width: 2.0)),
                             child: TextButton(
                               onPressed: () {},

@@ -16,7 +16,7 @@ class _CommunityState extends State<Community> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 3,
       child: Scaffold(
         endDrawer: CreateMenu(context),
@@ -28,18 +28,15 @@ class _CommunityState extends State<Community> {
               elevation: 0,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                      maintainState: false,
-                    ),
-                  );
+                  Navigator.of(context).pop(context);
                 },
-                icon: Image.asset('images/icon/icon.png'),
+                icon: Icon(
+                  Icons.arrow_back_rounded,
+                  color: Colors.black,
+                  size: 40,
+                ),
               ),
               toolbarHeight: 175,
-              leadingWidth: 100,
               actions: [
                 Builder(
                   builder: (context) => IconButton(
@@ -113,9 +110,9 @@ class _CommunityState extends State<Community> {
                           height: 20,
                         ),
                         CreateArticle(
-                            '餐廳', '有機食材烹煮無菜單定...', 'images/element/test.jpeg'),
+                            '餐廳', '有機食材烹煮無菜單定...', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '餐廳', '森林系網美餐廳', 'images/element/test.jpeg'),
+                            '餐廳', '森林系網美餐廳', 'images/element/test.jpeg', context),
                       ],
                     ),
                   ),
@@ -137,9 +134,9 @@ class _CommunityState extends State<Community> {
                           height: 20,
                         ),
                         CreateArticle(
-                            '景點', '到野柳一訪課本中的女...', 'images/element/test.jpeg'),
+                            '景點', '到野柳一訪課本中的女...', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '景點', '考古親子體驗一日遊', 'images/element/test.jpeg'),
+                            '景點', '考古親子體驗一日遊', 'images/element/test.jpeg', context),
                       ],
                     ),
                   ),
@@ -161,13 +158,13 @@ class _CommunityState extends State<Community> {
                           height: 20,
                         ),
                         CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg'),
+                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg'),
+                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg'),
+                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
                         CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg'),
+                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
                       ],
                     ),
                   ),

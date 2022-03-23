@@ -23,7 +23,7 @@ Container CreateMenu(BuildContext context) {
               Spacer(),
               IconButton(
                 padding: EdgeInsets.only(top: 10, right: 20),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.of(context).pop(context),
                 icon: Icon(
                   Icons.clear,
                   size: 40,
@@ -44,28 +44,28 @@ Container CreateMenu(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  buildMenuButton(
-                      Icons.leaderboard_rounded, '排行榜', context, Leaderboard()),
-                  buildMenuButton(
-                      FontAwesomeIcons.comments, '社群', context, Community()),
+                  buildMenuButton('images/element/rank.png', '排行榜', context,
+                      Leaderboard(), 40),
+                  buildMenuButton('images/element/community.png', '社群', context,
+                      Community(), 40),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  buildMenuButton(
-                      FontAwesomeIcons.infoCircle, '關於我們', context, AboutUs()),
-                  buildMenuButton(FontAwesomeIcons.userCircle, '個人資訊', context,
-                      UserInformation()),
+                  buildMenuButton('images/element/aboutUs.png', '關於我們', context,
+                      AboutUs(), 40),
+                  buildMenuButton('images/element/login.png', '個人資訊', context,
+                      UserInformation(), 40),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  buildMenuButton(
-                      FontAwesomeIcons.store, '成為店家', context, BecomeStore()),
-                  buildMenuButton(
-                      FontAwesomeIcons.signOutAlt, '登出', context, HomePage()),
+                  buildMenuButton('images/element/becomeStore.png', '成為店家',
+                      context, BecomeStore(), 40),
+                  buildMenuButton('images/element/logout.png', '登出', context,
+                      HomePage(), 40),
                 ],
               ),
             ],

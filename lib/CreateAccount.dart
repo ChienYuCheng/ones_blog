@@ -58,7 +58,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 child: Column(
                   children: [
                     Text(
-                      "創建帳號",
+                      '創建帳號',
                       style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(

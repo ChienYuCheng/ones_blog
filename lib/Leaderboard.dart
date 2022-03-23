@@ -26,18 +26,15 @@ class _LeaderboardState extends State<Leaderboard> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
+                Navigator.of(context).pop(context);
               },
-              icon: Image.asset('images/icon/icon.png'),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.black,
+                size: 40,
+              ),
             ),
             toolbarHeight: 125,
-            leadingWidth: 100,
             actions: [
               Builder(
                 builder: (context) => IconButton(
@@ -124,7 +121,8 @@ class _LeaderboardState extends State<Leaderboard> {
                     SizedBox(
                       height: 5,
                     ),
-                    buildDots(restaurantCurrentPos, [1, 2, 3, 4, 5, 6, 7, 8, 9]),
+                    buildDots(
+                        restaurantCurrentPos, [1, 2, 3, 4, 5, 6, 7, 8, 9]),
                     SizedBox(
                       height: 20,
                     ),

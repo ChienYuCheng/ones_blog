@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ones_blog/AboutUs.dart';
-import 'package:ones_blog/Community.dart';
-import 'package:ones_blog/Leaderboard.dart';
 import 'package:ones_blog/LodgingArea.dart';
-import 'package:ones_blog/LoginAccount.dart';
 import 'package:ones_blog/RestaurantArea.dart';
 import 'package:ones_blog/SpotsArea.dart';
+import 'package:ones_blog/StoreInformation.dart';
 import 'CreateMenu.dart';
 import 'function/BuildButton.dart';
 import 'function/PlaceElement.dart';
 import 'function/BuildDots.dart';
-import 'function/BuildMenuButton.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -159,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     buildDots(restaurantCurrentPos, [1, 2, 3, 4, 5]),
                     buildButtion(
-                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, RestaurantArea()),
+                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, StoreInformation()),
                     SizedBox(
                       height: 30,
                     ),

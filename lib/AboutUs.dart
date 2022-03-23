@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
-import 'Leaderboard.dart';
-import 'LoginAccount.dart';
-import 'function/BuildMenuButton.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AboutUs extends StatefulWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -27,18 +22,15 @@ class _AboutUsState extends State<AboutUs> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
+                Navigator.of(context).pop(context);
               },
-              icon: Image.asset('images/icon/icon.png'),
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.black,
+                size: 40,
+              ),
             ),
             toolbarHeight: 70,
-            leadingWidth: 100,
             actions: [
               Builder(
                 builder: (context) => IconButton(
