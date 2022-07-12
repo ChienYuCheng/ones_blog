@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/CreateMenu.dart';
+import 'package:ones_blog/bloc/post_bloc.dart';
+import 'package:ones_blog/model/post_model.dart';
+import 'package:ones_blog/services/post_service.dart';
 import 'AddArticle.dart';
 import 'HomePage.dart';
 import 'function/CreateArticle.dart';
@@ -13,8 +20,22 @@ class Community extends StatefulWidget {
 }
 
 class _CommunityState extends State<Community> {
+
+  // String category(int c){
+  //   String category = "";
+  //   if(c == 1){
+  //     category = "餐廳";
+  //   }else if(c == 2){
+  //     category = "景點";
+  //   }else{
+  //     category = "旅宿";
+  //   }
+  //   return category;
+  // }
+
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
       initialIndex: 0,
       length: 3,
@@ -95,26 +116,29 @@ class _CommunityState extends State<Community> {
           body: TabBarView(
             children: <Widget>[
               Center(
-                child: SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height + 350,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Color.fromRGBO(222, 215, 209, 1), width: 5),
-                      color: Color.fromRGBO(222, 215, 209, 1),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CreateArticle(
-                            '餐廳', '有機食材烹煮無菜單定...', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '餐廳', '森林系網美餐廳', 'images/element/test.jpeg', context),
-                      ],
-                    ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height + 350,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Color.fromRGBO(222, 215, 209, 1),width: 5),
+                    color: Color.fromRGBO(222, 215, 209, 1),
+                  ),
+                  child: FutureBuilder(
+                    builder: (context, snapshot){
+                      var showData = jsonDecode(snapshot.data.toString());
+                      return ListView.builder(
+                        itemBuilder: (BuildContext context, int index){
+                          return new Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              CreateArticle((showData['data'][index]['user']['name']).toString(), showData['data'][index]['title'].toString(), 'images/element/test.jpeg', context)
+                            ],
+                          );
+                        },
+                        itemCount: showData == null ? 0 : showData["data"].length,
+                      );
+                    },future: DefaultAssetBundle.of(context).loadString("assets/raw/posts.json"),
                   ),
                 ),
               ),
