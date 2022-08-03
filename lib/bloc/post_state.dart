@@ -1,20 +1,28 @@
-part of 'post_bloc.dart';
+// part of 'post_bloc.dart';
+//
+// @immutable
+// abstract class PostState {}
+//
+// class PostInitial extends PostState {}
+import 'package:equatable/equatable.dart';
+import 'package:ones_blog/model/post_model.dart';
 
-@immutable
-abstract class PostState {}
-
-class PostInitial extends PostState {}
-
-class PostLoadingState extends PostState{}
-
-class SuccessState extends PostState{
-  final List<PostModel> data;
-
-  SuccessState({required this.data});
+class PostState extends Equatable {
+  @override
+  List<Object?> get props => [];
 }
 
-class ErrorState extends PostState{
-  final String messageError;
+class InitialState extends PostState {}
 
-  ErrorState({required this.messageError});
+class LoadingState extends PostState {}
+
+
+class FetchSuccess extends PostState {
+  final List<PostModel> posts;
+  FetchSuccess({required this.posts});
+}
+
+class ErrorState extends PostState {
+  final String message;
+  ErrorState({required this.message});
 }

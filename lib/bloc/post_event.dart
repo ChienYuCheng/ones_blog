@@ -1,8 +1,12 @@
-part of 'post_bloc.dart';
+// part of 'post_bloc.dart';
+//
+// @immutable
+// abstract class PostEvent {}
+import 'package:equatable/equatable.dart';
 
-@immutable
-abstract class PostEvent {}
-
-class GetPostEvent extends PostEvent{
-
+class PostEvent extends Equatable{
+  @override
+  List<Object?> get props => [];
 }
+
+class DoFetchEvent extends PostEvent{}
