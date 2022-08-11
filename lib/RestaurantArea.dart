@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/Leaderboard.dart';
 import 'package:ones_blog/LoginAccount.dart';
+import 'package:ones_blog/SignOutMenu.dart';
 import 'AboutUs.dart';
 import 'Community.dart';
 import 'CreateMenu.dart';
@@ -20,7 +21,8 @@ class _RestaurantAreaState extends State<RestaurantArea> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      // endDrawer: CreateMenu(context),
+      endDrawer: SignOutMenu(context),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(

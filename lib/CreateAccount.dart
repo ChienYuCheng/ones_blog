@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/HomePage.dart';
 import 'package:ones_blog/LoginAccount.dart';
+import 'package:ones_blog/SignOutMenu.dart';
 import 'CreateMenu.dart';
 import 'function/BuildButton.dart';
 
@@ -16,7 +17,8 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      // endDrawer: CreateMenu(context),
+      endDrawer: SignOutMenu(context),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
@@ -25,13 +27,14 @@ class _CreateAccountState extends State<CreateAccount> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => HomePage(),
+                //     maintainState: false,
+                //   ),
+                // );
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
               },
               icon: Image.asset('images/icon/icon.png'),
             ),
@@ -266,7 +269,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 30),
+                          margin: EdgeInsets.only(left: 50),
                           width: 150,
                           height: 60,
                           child: TextField(
@@ -306,8 +309,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildButtion('取消', 80, 52, context, HomePage()),
-                        buildButtion('註冊', 80, 52, context, HomePage()),
+                        buildButtionPop('取消', 80, 52, context, HomePage()),
+                        buildButtionPushAndRem('註冊', 80, 52, context, HomePage()),
                       ],
                     ),
                   ],

@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ones_blog/ArticleContent.dart';
 import 'package:ones_blog/CreateMenu.dart';
-import 'package:ones_blog/bloc/post_bloc.dart';
 import 'package:ones_blog/model/post_model.dart';
-import 'package:ones_blog/services/post_service.dart';
+import 'package:ones_blog/repository/post_repo.dart';
 import 'AddArticle.dart';
 import 'HomePage.dart';
+import 'bloc/post_bloc.dart';
+import 'bloc/post_event.dart';
+import 'bloc/post_state.dart';
 import 'function/CreateArticle.dart';
 
 class Community extends StatefulWidget {
+  // final Data post;
+  // Community({required this.post});
   const Community({Key? key}) : super(key: key);
 
   @override
@@ -21,21 +26,17 @@ class Community extends StatefulWidget {
 
 class _CommunityState extends State<Community> {
 
-  // String category(int c){
-  //   String category = "";
-  //   if(c == 1){
-  //     category = "餐廳";
-  //   }else if(c == 2){
-  //     category = "景點";
-  //   }else{
-  //     category = "旅宿";
-  //   }
-  //   return category;
-  // }
+  late PostBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = BlocProvider.of<PostBloc>(context);
+    bloc.add(DoFetchEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       initialIndex: 0,
       length: 3,
@@ -124,44 +125,63 @@ class _CommunityState extends State<Community> {
                         color: Color.fromRGBO(222, 215, 209, 1),width: 5),
                     color: Color.fromRGBO(222, 215, 209, 1),
                   ),
-                  child: FutureBuilder(
-                    builder: (context, snapshot){
-                      var showData = jsonDecode(snapshot.data.toString());
-                      return ListView.builder(
-                        itemBuilder: (BuildContext context, int index){
-                          return new Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              CreateArticle((showData['data'][index]['user']['name']).toString(), showData['data'][index]['title'].toString(), 'images/element/test.jpeg', context)
-                            ],
+                  child: BlocBuilder<PostBloc, PostState>(
+                    builder: (context, state){
+                      if(state is LoadingState){
+                        return CircularProgressIndicator();
+                      }else if(state is FetchSuccess){
+                        return ListView.builder(
+                          itemCount: state.posts[0].data.length,
+                          itemBuilder: (context, index){
+                            final article = state.posts[0].data[index];
+                            return new Column(
+                              children: [
+                                if (state.posts[0].data[index].categoryId == 1)
+                                  CreateArticle(article.user.name, article.title, 'images/element/test.jpeg',context,index)
+                              ],
+                            );
+                          },
+                        );
+                      }else if(state is ErrorState){
+                        return ErrorWidget(state.message.toString());
+                      }
+                      return Container();
+                    },
+                  ),
+                ),
+              ),
+              Center(
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height + 350,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Color.fromRGBO(222, 215, 209, 1), width: 5),
+                      color: Color.fromRGBO(222, 215, 209, 1),
+                    ),
+                    child: BlocBuilder<PostBloc, PostState>(
+                      builder: (context, state){
+                        if(state is LoadingState){
+                          return CircularProgressIndicator();
+                        }else if(state is FetchSuccess){
+                          return ListView.builder(
+                            itemCount: state.posts[0].data.length,
+                            itemBuilder: (context, index){
+                              // print(index.toString());
+                              return new Column(
+                                children: [
+                                  if(state.posts[0].data[index].categoryId == 2)
+                                    CreateArticle(state.posts[0].data[index].user.name, state.posts[0].data[index].title, 'images/element/test.jpeg', context,index)
+                                ],
+                              );
+                            },
                           );
-                        },
-                        itemCount: showData == null ? 0 : showData["data"].length,
-                      );
-                    },future: DefaultAssetBundle.of(context).loadString("assets/raw/posts.json"),
-                  ),
-                ),
-              ),
-              Center(
-                child: SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height + 350,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Color.fromRGBO(222, 215, 209, 1), width: 5),
-                      color: Color.fromRGBO(222, 215, 209, 1),
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CreateArticle(
-                            '景點', '到野柳一訪課本中的女...', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '景點', '考古親子體驗一日遊', 'images/element/test.jpeg', context),
-                      ],
+                        }else if(state is ErrorState){
+                          return ErrorWidget(state.message.toString());
+                        }
+                        return Container();
+                      },
                     ),
                   ),
                 ),
@@ -176,20 +196,28 @@ class _CommunityState extends State<Community> {
                           color: Color.fromRGBO(222, 215, 209, 1), width: 5),
                       color: Color.fromRGBO(222, 215, 209, 1),
                     ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
-                      ],
+                    child: BlocBuilder<PostBloc, PostState>(
+                      builder: (context, state){
+                        if(state is LoadingState){
+                          return CircularProgressIndicator();
+                        }else if(state is FetchSuccess){
+                          return ListView.builder(
+                            itemCount: state.posts[0].data.length,
+                            itemBuilder: (context, index){
+                              // print(index.toString());
+                              return new Column(
+                                children: [
+                                  if(state.posts[0].data[index].categoryId == 3)
+                                    CreateArticle(state.posts[0].data[index].user.name, state.posts[0].data[index].title, 'images/element/test.jpeg', context,index)
+                                ],
+                              );
+                            },
+                          );
+                        }else if(state is ErrorState){
+                          return ErrorWidget(state.message.toString());
+                        }
+                        return Container();
+                      },
                     ),
                   ),
                 ),

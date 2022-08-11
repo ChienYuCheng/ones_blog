@@ -106,7 +106,17 @@ class _UserInformationState extends State<UserInformation> {
                     Row(
                       children: [
                         SizedBox(
-                          width: 180,
+                          width: 40,
+                        ),
+                        Text(
+                          "hi22556",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 80,
                         ),
                         buildButtion('編輯個人檔案', 120, 48, context, HomePage()),
                       ],
@@ -159,19 +169,19 @@ class _UserInformationState extends State<UserInformation> {
                       color: Color.fromRGBO(222, 215, 209, 1),
                     ),
                     child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
-                      ],
+                      // children: [
+                      //   SizedBox(
+                      //     height: 20,
+                      //   ),
+                      //   CreateArticle(
+                      //       '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context,),
+                      //   CreateArticle(
+                      //       '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
+                      // ],
                     ),
                   ),
                 ),
@@ -187,19 +197,19 @@ class _UserInformationState extends State<UserInformation> {
                       color: Color.fromRGBO(222, 215, 209, 1),
                     ),
                     child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
-                      ],
+                      // children: [
+                      //   SizedBox(
+                      //     height: 20,
+                      //   ),
+                      //   CreateArticle(
+                      //       '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
+                      // ],
                     ),
                   ),
                 ),
@@ -215,19 +225,19 @@ class _UserInformationState extends State<UserInformation> {
                       color: Color.fromRGBO(222, 215, 209, 1),
                     ),
                     child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
-                      ],
+                      // children: [
+                      //   SizedBox(
+                      //     height: 20,
+                      //   ),
+                      //   CreateArticle(
+                      //       '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
+                      // ],
                     ),
                   ),
                 ),
@@ -243,19 +253,19 @@ class _UserInformationState extends State<UserInformation> {
                       color: Color.fromRGBO(222, 215, 209, 1),
                     ),
                     child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CreateArticle(
-                            '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
-                        CreateArticle(
-                            '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
-                      ],
+                      // children: [
+                      //   SizedBox(
+                      //     height: 20,
+                      //   ),
+                      //   CreateArticle(
+                      //       '旅宿', '五百多坪庭園景觀民宿', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '超棒五星飯店+高空泳池', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '高空泳池、平價五星級酒店', 'images/element/test.jpeg', context),
+                      //   CreateArticle(
+                      //       '旅宿', '淡水捷運交通接駁＆禮...', 'images/element/test.jpeg', context),
+                      // ],
                     ),
                   ),
                 ),

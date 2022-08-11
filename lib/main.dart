@@ -9,14 +9,13 @@ import 'package:ones_blog/Community.dart';
 import 'package:ones_blog/CreateAccount.dart';
 import 'package:ones_blog/StoreInformation.dart';
 import 'package:ones_blog/bloc/post_bloc.dart';
-import 'package:ones_blog/bloc/post_cubit.dart';
 import 'package:ones_blog/repository/post_repo.dart';
 import 'package:ones_blog/screens/home_screen.dart';
-import 'package:ones_blog/services/post_service.dart';
 import 'HomePage.dart';
 import 'UserInformation.dart';
 import 'package:flutter/services.dart';
 
+import 'bloc/post_event.dart';
 import 'bloc/post_state.dart';
 
 void main() {
@@ -29,10 +28,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (context) => PostBloc(InitialState(), PostRepository()),
-        child: HomeScreen(),
+      home: BlocProvider<PostBloc>(
+        create: (context) => PostBloc(PostRepository()),
+        child: HomePage(),
       ),
+      // home: HomePage(),
     );
   }
 }

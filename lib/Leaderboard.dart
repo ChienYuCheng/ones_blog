@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
+import 'StoreInformation.dart';
 import 'function/BuildDots.dart';
 
 class Leaderboard extends StatefulWidget {
@@ -107,11 +108,16 @@ class _LeaderboardState extends State<Leaderboard> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Color.fromRGBO(198, 201, 203, 1)),
-                              child: Center(
-                                child: Text(
-                                  'text $i',
-                                  style: TextStyle(fontSize: 16.0),
+                              child: GestureDetector(
+                                child: Center(
+                                  child: Text(
+                                    'text $i',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ),
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                },
                               ),
                             );
                           },
@@ -159,11 +165,16 @@ class _LeaderboardState extends State<Leaderboard> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Color.fromRGBO(198, 201, 203, 1)),
-                              child: Center(
-                                child: Text(
-                                  'text $i',
-                                  style: TextStyle(fontSize: 16.0),
+                              child: GestureDetector(
+                                child: Center(
+                                  child: Text(
+                                    'text $i',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ),
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                },
                               ),
                             );
                           },
@@ -210,11 +221,16 @@ class _LeaderboardState extends State<Leaderboard> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Color.fromRGBO(198, 201, 203, 1)),
-                              child: Center(
-                                child: Text(
-                                  'text $i',
-                                  style: TextStyle(fontSize: 16.0),
+                              child: GestureDetector(
+                                child: Center(
+                                  child: Text(
+                                    'text $i',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ),
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                },
                               ),
                             );
                           },

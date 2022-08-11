@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/CreateAccount.dart';
+import 'package:ones_blog/SignOutMenu.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'function/BuildButton.dart';
@@ -16,7 +17,8 @@ class _LoginAccountState extends State<LoginAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      // endDrawer: CreateMenu(context),
+      endDrawer: SignOutMenu(context),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
@@ -218,7 +220,7 @@ class _LoginAccountState extends State<LoginAccount> {
                     Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 30),
+                          margin: EdgeInsets.only(left: 50),
                           width: 150,
                           height: 60,
                           child: TextField(
@@ -258,8 +260,8 @@ class _LoginAccountState extends State<LoginAccount> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildButtion('取消', 80, 52, context, HomePage()),
-                        buildButtion('登入', 80, 52, context, HomePage()),
+                        buildButtionPop('取消', 80, 52, context, HomePage()),
+                        buildButtionPushAndRem('登入', 80, 52, context, HomePage()),
                       ],
                     ),
                   ],

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ones_blog/bloc/post_bloc.dart';
-import 'package:ones_blog/bloc/post_cubit.dart';
 import 'package:ones_blog/model/post_model.dart';
 
 import '../bloc/post_event.dart';
@@ -15,22 +14,18 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late PostBloc bloc;
-
-  @override
-  void initState() {
-    bloc = BlocProvider.of<PostBloc>(context);
-    bloc.add(DoFetchEvent());
-    super.initState();
-  }
-  @override
-  void dispose() {
-    bloc.close();
-    super.dispose();
-  }
+  // late PostBloc bloc;
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   bloc = BlocProvider.of<PostBloc>(context);
+  //   bloc.add(DoFetchEvent());
+  // }
   
   @override
   Widget build(BuildContext context) {
@@ -46,11 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
               return CircularProgressIndicator();
             }else if(state is FetchSuccess){
               return ListView.builder(
-                itemCount: state.posts.length,
+                itemCount: state.posts[0].data.length,
                 itemBuilder: (context, index){
+                  print(state.posts[0].data.length);
                   return Card(
                     child: ListTile(
-                      title: Text(state.posts[index].data.toString()),
+                      title: Text(state.posts[0].data[index].content),
                     ),
                   );
                 },

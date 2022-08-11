@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/Constant.dart';
+import 'package:ones_blog/StoreInformation.dart';
 import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
@@ -322,8 +323,8 @@ class _BecomeStoreState extends State<BecomeStore> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildButtion('取消', 80, 52, context, HomePage()),
-                        buildButtion('發佈', 80, 52, context, Community()),
+                        buildButtionPop('取消', 80, 52, context, HomePage()),
+                        buildButtion('發佈', 80, 52, context, StoreInformation()),
                       ],
                     ),
                   ],

@@ -1,223 +1,169 @@
-class PostModel {
-  List<Data>? data;
-  Links? links;
-  Meta? meta;
+//posts.json是一個具有列表的巢狀結構，本身還是一個Map(花括號開始就是Map,方括號開始就是list of map)
+import 'package:equatable/equatable.dart';
 
-  PostModel({this.data, this.links, this.meta});
+class PostModel{
+  List<Data> data;
+  Links links;
+  Meta meta;
 
-  PostModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
-      });
-    }
-    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
-    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
-  }
+  PostModel({required this.data, required this.links, required this.meta});
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    if (this.links != null) {
-      data['links'] = this.links!.toJson();
-    }
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
-    }
-    return data;
+  factory PostModel.fromJson(Map<String, dynamic> json){
+
+    final data = json['data'] as List;
+    List<Data> dataList = data.map((e) => Data.fromJson(e)).toList();
+
+    Links linksList = Links.fromJson(json['links']);
+
+    Meta metaList = Meta.fromJson(json['meta']);
+
+    return PostModel(
+      data: dataList,
+      links: linksList,
+      meta: metaList
+    );
   }
 }
 
 class Data {
-  String? createdAt;
-  User? user;
-  int? storeId;
-  int? categoryId;
-  String? title;
-  String? content;
-  String? publishedAt;
-  String? slug;
+  String createdAt;
+  User user;
+  int storeId;
+  int categoryId;
+  String title;
+  String content;
+  String publishedAt;
+  String slug;
 
   Data(
-      {this.createdAt,
-        this.user,
-        this.storeId,
-        this.categoryId,
-        this.title,
-        this.content,
-        this.publishedAt,
-        this.slug});
+      {required this.createdAt,
+        required this.user,
+        required this.storeId,
+        required this.categoryId,
+        required this.title,
+        required this.content,
+        required this.publishedAt,
+        required this.slug});
 
-  Data.fromJson(Map<String, dynamic> json) {
-    createdAt = json['created_at'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    storeId = json['store_id'];
-    categoryId = json['category_id'];
-    title = json['title'];
-    content = json['content'];
-    publishedAt = json['published_at'];
-    slug = json['slug'];
-  }
+  factory Data.fromJson(Map<String, dynamic> json){
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['created_at'] = this.createdAt;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
-    data['store_id'] = this.storeId;
-    data['category_id'] = this.categoryId;
-    data['title'] = this.title;
-    data['content'] = this.content;
-    data['published_at'] = this.publishedAt;
-    data['slug'] = this.slug;
-    return data;
+    User user = User.fromJson(json['user']);
+
+    return Data(
+      createdAt: json['created_at'],
+      user: user,
+      storeId: json['store_id'],
+      categoryId: json['category_id'],
+      title: json['title']as String,
+      content: json['content']as String,
+      publishedAt: json['published_at']as String,
+      slug: json['slug']as String
+    );
   }
 }
 
 class User {
-  int? id;
-  String? createdAt;
-  String? updatedAt;
-  String? name;
-  String? email;
-  String? emailVerifiedAt;
-  int? isStore;
-  int? loginTypeId;
+  int id;
+  String createdAt;
+  String updatedAt;
+  String name;
+  String email;
+  String emailVerifiedAt;
+  int isStore;
+  int loginTypeId;
 
   User(
-      {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.name,
-        this.email,
-        this.emailVerifiedAt,
-        this.isStore,
-        this.loginTypeId});
+      { required this.id,
+        required this.createdAt,
+        required this.updatedAt,
+        required this.name,
+        required this.email,
+        required this.emailVerifiedAt,
+        required this.isStore,
+        required this.loginTypeId});
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    name = json['name'];
-    email = json['email'];
-    emailVerifiedAt = json['email_verified_at'];
-    isStore = json['is_store'];
-    loginTypeId = json['login_type_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['is_store'] = this.isStore;
-    data['login_type_id'] = this.loginTypeId;
-    return data;
+  factory User.fromJson(Map<String, dynamic> json){
+    return User(
+      id: json['id'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      name: json['name'],
+      email: json['email'],
+      emailVerifiedAt: json['email_verified_at'],
+      isStore: json['is_store'],
+      loginTypeId: json['login_type_id']
+    );
   }
 }
 
 class Links {
-  String? first;
-  String? last;
-  Null? prev;
-  String? next;
+  String first;
+  String last;
+  String prev;
+  String next;
 
-  Links({this.first, this.last, this.prev, this.next});
+  Links({required this.first, required this.last, required this.prev, required this.next});
 
-  Links.fromJson(Map<String, dynamic> json) {
-    first = json['first'];
-    last = json['last'];
-    prev = json['prev'];
-    next = json['next'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first'] = this.first;
-    data['last'] = this.last;
-    data['prev'] = this.prev;
-    data['next'] = this.next;
-    return data;
+  factory Links.fromJson(Map<String, dynamic> json){
+    return Links(
+      first: json['first'],
+      last: json['last'],
+      prev: json['prev'] != null ? json['prev'] : "null",
+      next: json['next']
+    );
   }
 }
 
 class Meta {
-  int? currentPage;
-  int? from;
-  int? lastPage;
-  List<Links>? links;
-  String? path;
-  int? perPage;
-  int? to;
-  int? total;
+  int currentPage;
+  int from;
+  int lastPage;
+  List<Link> link;
+  String path;
+  int perPage;
+  int to;
+  int total;
 
   Meta(
-      {this.currentPage,
-        this.from,
-        this.lastPage,
-        this.links,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      { required this.currentPage,
+        required this.from,
+        required this.lastPage,
+        required this.link,
+        required this.path,
+        required this.perPage,
+        required this.to,
+        required this.total});
 
-  Meta.fromJson(Map<String, dynamic> json) {
-    currentPage = json['current_page'];
-    from = json['from'];
-    lastPage = json['last_page'];
-    if (json['links'] != null) {
-      links = <Links>[];
-      json['links'].forEach((v) {
-        links!.add(new Links.fromJson(v));
-      });
-    }
-    path = json['path'];
-    perPage = json['per_page'];
-    to = json['to'];
-    total = json['total'];
-  }
+  factory Meta.fromJson(Map<String, dynamic> json){
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_page'] = this.currentPage;
-    data['from'] = this.from;
-    data['last_page'] = this.lastPage;
-    if (this.links != null) {
-      data['links'] = this.links!.map((v) => v.toJson()).toList();
-    }
-    data['path'] = this.path;
-    data['per_page'] = this.perPage;
-    data['to'] = this.to;
-    data['total'] = this.total;
-    return data;
+    final origin = json['links'] as List;
+    List<Link> linksData = origin.map((e) => Link.fromJson(e)).toList();
+
+    return Meta(
+      currentPage: json['current_page'],
+      from: json['from'],
+      lastPage: json['last_page'],
+      link: linksData,
+      path: json['path'],
+      perPage: json['per_page'],
+      to: json['to'],
+      total: json['total']
+    );
   }
 }
 
 class Link {
-  String? url;
-  String? label;
-  bool? active;
+  String url;
+  String label;
+  bool active;
 
-  Link({this.url, this.label, this.active});
+  Link({required this.url, required this.label, required this.active});
 
-  Link.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    label = json['label'];
-    active = json['active'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['label'] = this.label;
-    data['active'] = this.active;
-    return data;
+  factory Link.fromJson(Map<String, dynamic> json){
+    return Link(
+      url: json['url'] != null ? json['url'] : "null",
+      label: json['label'],
+      active: json['active']
+    );
   }
 }

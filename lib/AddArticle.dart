@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ones_blog/ArticleContent.dart';
 import 'package:ones_blog/Community.dart';
 import 'package:ones_blog/Constant.dart';
 import 'package:ones_blog/SearchLocations.dart';
+import 'package:ones_blog/bloc/post_bloc.dart';
+import 'package:ones_blog/model/post_model.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'function/BuildButton.dart';
 
 class AddArticle extends StatefulWidget {
+  // final Data post;
+  // AddArticle({required this.post});
   const AddArticle({Key? key}) : super(key: key);
 
   @override
@@ -269,8 +274,8 @@ class _AddArticleState extends State<AddArticle> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildButtion('取消', 80, 52, context, HomePage()),
-                        buildButtion('發佈', 80, 52, context, Community()),
+                        buildButtion('取消', 80, 52, context, Community()),
+                        buildButtion('發佈', 80, 52, context, ArticleContent(index: 0,)),
                       ],
                     ),
                   ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ones_blog/SignOutMenu.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 
@@ -13,7 +14,8 @@ class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      // endDrawer: CreateMenu(context),
+      endDrawer: SignOutMenu(context),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(

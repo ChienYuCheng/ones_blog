@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ones_blog/LodgingArea.dart';
 import 'package:ones_blog/RestaurantArea.dart';
+import 'package:ones_blog/SignOutMenu.dart';
 import 'package:ones_blog/SpotsArea.dart';
 import 'package:ones_blog/StoreInformation.dart';
 import 'CreateMenu.dart';
@@ -96,9 +97,9 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Row(
                       children: [
-                        buildButtion('餐廳', 80, 48, context, RestaurantArea()),
-                        buildButtion('景點', 80, 48, context, SpotsArea()),
-                        buildButtion('旅宿', 80, 48, context, LodgingArea()),
+                        buildButtionPush('餐廳', 80, 48, context, RestaurantArea()),
+                        buildButtionPush('景點', 80, 48, context, SpotsArea()),
+                        buildButtionPush('旅宿', 80, 48, context, LodgingArea()),
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     ),
@@ -138,11 +139,16 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Color.fromRGBO(198, 201, 203, 1)),
-                              child: Center(
-                                child: Text(
-                                  'text $i',
-                                  style: TextStyle(fontSize: 16.0),
+                              child: GestureDetector(
+                                child: Center(
+                                  child: Text(
+                                    'text $i',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ),
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                },
                               ),
                             );
                           },
@@ -153,8 +159,8 @@ class _HomePageState extends State<HomePage> {
                       height: 5,
                     ),
                     buildDots(restaurantCurrentPos, [1, 2, 3, 4, 5]),
-                    buildButtion(
-                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, StoreInformation()),
+                    buildButtionPush(
+                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, RestaurantArea()),
                     SizedBox(
                       height: 30,
                     ),
@@ -191,11 +197,16 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Color.fromRGBO(198, 201, 203, 1)),
-                              child: Center(
-                                child: Text(
-                                  'text $i',
-                                  style: TextStyle(fontSize: 16.0),
+                              child: GestureDetector(
+                                child: Center(
+                                  child: Text(
+                                    'text $i',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ),
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                },
                               ),
                             );
                           },
@@ -206,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                       height: 5,
                     ),
                     buildDots(spotsCurrentPos, [1, 2, 3, 4, 5]),
-                    buildButtion(
+                    buildButtionPush(
                         "看更多", MediaQuery.of(context).size.width / 2, 48, context, SpotsArea()),
                     SizedBox(
                       height: 30,
@@ -244,11 +255,16 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Color.fromRGBO(198, 201, 203, 1)),
-                              child: Center(
-                                child: Text(
-                                  'text $i',
-                                  style: TextStyle(fontSize: 16.0),
+                              child: GestureDetector(
+                                child: Center(
+                                  child: Text(
+                                    'text $i',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ),
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                },
                               ),
                             );
                           },
@@ -259,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                       height: 5,
                     ),
                     buildDots(lodgingCurrentPos, [1, 2, 3, 4, 5]),
-                    buildButtion(
+                    buildButtionPush(
                         "看更多", MediaQuery.of(context).size.width / 2, 48, context, LodgingArea()),
                   ],
                 ),

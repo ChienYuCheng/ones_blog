@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ones_blog/ArticleContent.dart';
 import 'package:ones_blog/Constant.dart';
+import 'package:ones_blog/bloc/post_bloc.dart';
+import 'package:ones_blog/model/post_model.dart';
+import 'package:ones_blog/repository/post_repo.dart';
 
-TextButton CreateArticle(String type, String title, String route, BuildContext context) {
+TextButton CreateArticle(String type, String title, String route, BuildContext context,int index) {
+  // final int index;
   return TextButton(
     onPressed: () {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ArticleContent(),
+          builder: ((context) {
+            return BlocProvider<PostBloc>(
+              create: (context) => PostBloc(PostRepository()),
+              child: ArticleContent(index: index,),
+            );
+          }),
           maintainState: false,
         ),
       );
@@ -25,23 +35,27 @@ TextButton CreateArticle(String type, String title, String route, BuildContext c
       height: 85,
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                type,
-                style: titleStyle,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                title,
-                style: contextStyle,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  type,
+                  style: titleStyle,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  title,
+                  style: contextStyle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            ),
           ),
-          Spacer(),
+          // Spacer(),
           ClipRRect(
             borderRadius: BorderRadius.circular(5.0),
             child: Image(

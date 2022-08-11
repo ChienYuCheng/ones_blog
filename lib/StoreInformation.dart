@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ones_blog/SignOutMenu.dart';
 import 'function/ShareArticle.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
@@ -25,7 +26,8 @@ class _StoreInformationState extends State<StoreInformation> {
       length: 2,
       child: Scaffold(
         // resizeToAvoidBottomInset: false,
-        endDrawer: CreateMenu(context),
+        // endDrawer: CreateMenu(context),
+        endDrawer: SignOutMenu(context),
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxScrolled) => [
             SliverAppBar(
