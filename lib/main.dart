@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: BlocProvider<PostBloc>(
         create: (context) => PostBloc(PostRepository()),
-        child: HomePage(),
+        child: Community(),
       ),
       // home: HomePage(),
     );

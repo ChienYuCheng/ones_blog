@@ -127,11 +127,13 @@ class _CommunityState extends State<Community> {
                   ),
                   child: BlocBuilder<PostBloc, PostState>(
                     builder: (context, state){
-                      if(state is LoadingState){
-                        return CircularProgressIndicator();
-                      }else if(state is FetchSuccess){
+                      if (state is LoadingState) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if(state is FetchSuccess){
                         return ListView.builder(
-                          itemCount: state.posts[0].data.length,
+                          itemCount: state.posts.length,
                           itemBuilder: (context, index){
                             final article = state.posts[0].data[index];
                             return new Column(
@@ -163,7 +165,9 @@ class _CommunityState extends State<Community> {
                     child: BlocBuilder<PostBloc, PostState>(
                       builder: (context, state){
                         if(state is LoadingState){
-                          return CircularProgressIndicator();
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
                         }else if(state is FetchSuccess){
                           return ListView.builder(
                             itemCount: state.posts[0].data.length,
@@ -199,7 +203,9 @@ class _CommunityState extends State<Community> {
                     child: BlocBuilder<PostBloc, PostState>(
                       builder: (context, state){
                         if(state is LoadingState){
-                          return CircularProgressIndicator();
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
                         }else if(state is FetchSuccess){
                           return ListView.builder(
                             itemCount: state.posts[0].data.length,
