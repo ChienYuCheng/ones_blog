@@ -43,9 +43,9 @@ class _ArticleContentState extends State<ArticleContent> {
           if(state is LoadingState){
             return CircularProgressIndicator();
           }else if(state is FetchSuccess){
-            if(state.posts[0].data[widget.index].categoryId == 1){
+            if(state.posts.data[widget.index].categoryId == 1){
               category = "餐廳專區";
-            }else if(state.posts[0].data[widget.index].categoryId == 2){
+            }else if(state.posts.data[widget.index].categoryId == 2){
               category = "景點專區";
             }else{
               category = "旅宿專區";
@@ -105,7 +105,7 @@ class _ArticleContentState extends State<ArticleContent> {
                               Column(
                                 children: [
                                   Text(
-                                    state.posts[0].data[widget.index].user.name,
+                                    state.posts.data[widget.index].user.name,
                                     style: contextStyle,
                                   ),
                                   SizedBox(
@@ -144,7 +144,7 @@ class _ArticleContentState extends State<ArticleContent> {
                               ),
                               Expanded(
                                 child: Text(
-                                  state.posts[0].data[widget.index].title,
+                                  state.posts.data[widget.index].title,
                                   style: titleStyle,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -181,7 +181,7 @@ class _ArticleContentState extends State<ArticleContent> {
                               children: [
                                 Text(
                                   // '- 吃飯的日嚐\n- 生活的日常\n- 土地的日藏\n一間披著名為餐廳的「日常站」\n- 吃飯的日嚐\n- 生活的日常\n- 土地的日藏- 生活的日常\n- 土地的日藏\n一間披著名為餐廳的「日常站」\n- 吃飯的日嚐\n- 生活的日常\n- 土地的日藏\n- 土地的日藏- 生活的日常\n- 土地的日藏\n一間披著名為餐廳的「日常站」\n- 吃飯的日嚐\n- 生活的日常\n- 土地的日藏\n- 土地的日藏- 生活的日常\n- 土地的日藏\n一間披著名為餐廳的「日常站」\n- 吃飯的日嚐\n- 生活的日常\n- 土地的日藏\n- 土地的日藏- 生活的日常',
-                                    state.posts[0].data[widget.index].content,
+                                    state.posts.data[widget.index].content,
                                     style: contextStyle),
                                 SizedBox(
                                   height: 20.0,
@@ -192,7 +192,7 @@ class _ArticleContentState extends State<ArticleContent> {
                                       width: 30.0,
                                     ),
                                     Text(
-                                      state.posts[0].data[widget.index].publishedAt,
+                                      state.posts.data[widget.index].publishedAt,
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey[600]),

@@ -18,7 +18,7 @@ class LoadingState extends PostState {}
 
 
 class FetchSuccess extends PostState {
-  final List<PostModel> posts;
+  final PostModel posts;
   FetchSuccess({required this.posts});
 }
 

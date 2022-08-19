@@ -1,5 +1,4 @@
 //posts.json是一個具有列表的巢狀結構，本身還是一個Map(花括號開始就是Map,方括號開始就是list of map)
-import 'package:equatable/equatable.dart';
 
 class PostModel{
   List<Data> data;
@@ -69,7 +68,7 @@ class User {
   String name;
   String email;
   String emailVerifiedAt;
-  int isStore;
+  bool isStore;
   int loginTypeId;
 
   User(
@@ -109,7 +108,7 @@ class Links {
       first: json['first'],
       last: json['last'],
       prev: json['prev'] != null ? json['prev'] : "null",
-      next: json['next']
+      next: json['next'] != null ? json['next'] : "null"
     );
   }
 }
@@ -120,7 +119,7 @@ class Meta {
   int lastPage;
   List<Link> link;
   String path;
-  int perPage;
+  String perPage;
   int to;
   int total;
 

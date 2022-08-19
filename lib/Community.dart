@@ -16,8 +16,6 @@ import 'bloc/post_state.dart';
 import 'function/CreateArticle.dart';
 
 class Community extends StatefulWidget {
-  // final Data post;
-  // Community({required this.post});
   const Community({Key? key}) : super(key: key);
 
   @override
@@ -133,12 +131,12 @@ class _CommunityState extends State<Community> {
                         );
                       } else if(state is FetchSuccess){
                         return ListView.builder(
-                          itemCount: state.posts.length,
+                          itemCount: state.posts.data.length,
                           itemBuilder: (context, index){
-                            final article = state.posts[0].data[index];
+                            final article = state.posts.data[index];
                             return new Column(
                               children: [
-                                if (state.posts[0].data[index].categoryId == 1)
+                                if (state.posts.data[index].categoryId == 1)
                                   CreateArticle(article.user.name, article.title, 'images/element/test.jpeg',context,index)
                               ],
                             );
@@ -170,13 +168,13 @@ class _CommunityState extends State<Community> {
                           );
                         }else if(state is FetchSuccess){
                           return ListView.builder(
-                            itemCount: state.posts[0].data.length,
+                            itemCount: state.posts.data.length,
                             itemBuilder: (context, index){
                               // print(index.toString());
                               return new Column(
                                 children: [
-                                  if(state.posts[0].data[index].categoryId == 2)
-                                    CreateArticle(state.posts[0].data[index].user.name, state.posts[0].data[index].title, 'images/element/test.jpeg', context,index)
+                                  if(state.posts.data[index].categoryId == 2)
+                                    CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index)
                                 ],
                               );
                             },
@@ -208,13 +206,13 @@ class _CommunityState extends State<Community> {
                           );
                         }else if(state is FetchSuccess){
                           return ListView.builder(
-                            itemCount: state.posts[0].data.length,
+                            itemCount: state.posts.data.length,
                             itemBuilder: (context, index){
                               // print(index.toString());
                               return new Column(
                                 children: [
-                                  if(state.posts[0].data[index].categoryId == 3)
-                                    CreateArticle(state.posts[0].data[index].user.name, state.posts[0].data[index].title, 'images/element/test.jpeg', context,index)
+                                  if(state.posts.data[index].categoryId == 3)
+                                    CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index)
                                 ],
                               );
                             },

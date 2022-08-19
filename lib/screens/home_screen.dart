@@ -41,12 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
               return CircularProgressIndicator();
             }else if(state is FetchSuccess){
               return ListView.builder(
-                itemCount: state.posts[0].data.length,
+                itemCount: state.posts.data.length,
                 itemBuilder: (context, index){
-                  print(state.posts[0].data.length);
+                  print(state.posts.data.length);
                   return Card(
                     child: ListTile(
-                      title: Text(state.posts[0].data[index].content),
+                      title: Text(state.posts.data[index].content),
                     ),
                   );
                 },
