@@ -115,38 +115,40 @@ class _CommunityState extends State<Community> {
           body: TabBarView(
             children: <Widget>[
               Center(
-                child: Container(
-                  height: MediaQuery.of(context).size.height + 350,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Color.fromRGBO(222, 215, 209, 1),width: 5),
-                    color: Color.fromRGBO(222, 215, 209, 1),
-                  ),
-                  child: BlocBuilder<PostBloc, PostState>(
-                    builder: (context, state){
-                      if (state is LoadingState) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if(state is FetchSuccess){
-                        return ListView.builder(
-                          itemCount: state.posts.data.length,
-                          itemBuilder: (context, index){
-                            final article = state.posts.data[index];
-                            return new Column(
-                              children: [
-                                if (state.posts.data[index].categoryId == 1)
-                                  CreateArticle(article.user.name, article.title, 'images/element/test.jpeg',context,index)
-                              ],
-                            );
-                          },
-                        );
-                      }else if(state is ErrorState){
-                        return ErrorWidget(state.message.toString());
-                      }
-                      return Container();
-                    },
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height + 350,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Color.fromRGBO(222, 215, 209, 1),width: 5),
+                      color: Color.fromRGBO(222, 215, 209, 1),
+                    ),
+                    child: BlocBuilder<PostBloc, PostState>(
+                      builder: (context, state){
+                        if (state is LoadingState) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if(state is FetchSuccess){
+                          return ListView.builder(
+                            itemCount: state.posts.data.length,
+                            itemBuilder: (context, index){
+                              final article = state.posts.data[index];
+                              return new Column(
+                                children: [
+                                  if (state.posts.data[index].locationId == 1)
+                                    CreateArticle(article.user.name, article.title, 'images/element/test.jpeg',context,index)
+                                ],
+                              );
+                            },
+                          );
+                        }else if(state is ErrorState){
+                          return ErrorWidget(state.message.toString());
+                        }
+                        return Container();
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -173,7 +175,7 @@ class _CommunityState extends State<Community> {
                               // print(index.toString());
                               return new Column(
                                 children: [
-                                  if(state.posts.data[index].categoryId == 2)
+                                  if(state.posts.data[index].locationId == 2)
                                     CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index)
                                 ],
                               );
@@ -211,7 +213,7 @@ class _CommunityState extends State<Community> {
                               // print(index.toString());
                               return new Column(
                                 children: [
-                                  if(state.posts.data[index].categoryId == 3)
+                                  if(state.posts.data[index].locationId == 3)
                                     CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index)
                                 ],
                               );

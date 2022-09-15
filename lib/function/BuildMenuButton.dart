@@ -59,3 +59,30 @@ Container buildMenuButtonPop(String route, String buttonName, BuildContext conte
     ),
   );
 }
+
+Container kbuildMenuButtonPop(String route, String buttonName, BuildContext context, Function onPressed, double width) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10.0),
+      color: Colors.white,
+    ),
+    margin: EdgeInsets.only(top: 30),
+    width: 120,
+    height: 80,
+    child: TextButton(
+      onPressed: () {
+        // Navigator.pop(context);
+        onPressed();
+      },
+      child: Column(
+        children: [
+          Image(image: AssetImage(route), width: width,),
+          Text(
+            buttonName,
+            style: titleStyle,
+          ),
+        ],
+      ),
+    ),
+  );
+}

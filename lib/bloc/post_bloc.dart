@@ -9,16 +9,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc(this.repo) : super(InitialState());
 
   @override
-  Stream<PostState> mapEventToState(PostEvent event) async*{
-    if(event is DoFetchEvent) {
+  Stream<PostState> mapEventToState(PostEvent event) async* {
+    if (event is DoFetchEvent) {
       yield LoadingState();
-      try{
+      try {
         PostModel posts = await repo.fetchPosts();
         yield FetchSuccess(posts: posts);
-      }catch(e){
+      } catch (e) {
         yield ErrorState(message: e.toString());
       }
     }
   }
-
 }

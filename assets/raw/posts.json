@@ -264,7 +264,7 @@
             }
         ],
         "path": "http://ones-blog-api.test/api/posts",
-        "per_page": 10,
+        "per_page": "10",
         "to": 10,
         "total": 100
     }

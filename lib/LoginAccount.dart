@@ -1,7 +1,14 @@
+import 'dart:io' show Platform;
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/CreateAccount.dart';
 import 'package:ones_blog/SignOutMenu.dart';
+import 'package:ones_blog/model/api_response.dart';
+import 'package:ones_blog/model/user_model.dart';
+import 'package:ones_blog/service/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'function/BuildButton.dart';
@@ -14,263 +21,282 @@ class LoginAccount extends StatefulWidget {
 }
 
 class _LoginAccountState extends State<LoginAccount> {
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  String deviceName = '';
+
+  void _loginUser() async {
+    ApiResponse response = await login(emailController.text, passwordController.text, deviceName);
+    try{
+      if(kIsWeb){
+        WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
+        print('Running on ${webBrowserInfo.userAgent}');
+      }else if(Platform.isAndroid){
+        AndroidDeviceInfo android = await deviceInfo.androidInfo;
+        print('Running on ${android.brand}');
+        setState(() {
+          deviceName = android.brand.toString();
+        });
+      }else if(Platform.isIOS){
+        IosDeviceInfo ios = await deviceInfo.iosInfo;
+        print('Running on ${ios.utsname.machine}');
+        setState(() {
+          deviceName = ios.model.toString();
+        });
+      }else if (Platform.isWindows) {
+        WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;
+        print(windowsInfo.toMap().toString());
+        setState(() {deviceName = windowsInfo.toMap().toString();});
+      }
+      else if (Platform.isMacOS) {
+        MacOsDeviceInfo macOSInfo = await deviceInfo.macOsInfo;
+        print(macOSInfo.toMap().toString());
+        setState(() {deviceName = macOSInfo.toMap().toString();});
+      }
+      else if (Platform.isLinux) {
+        LinuxDeviceInfo linuxInfo = await deviceInfo.linuxInfo;
+        print(linuxInfo.toMap().toString());
+        setState(() {deviceName = linuxInfo.toMap().toString();});
+      }
+    }catch(e){
+      print('login Error');
+      print(e);
+    }
+    if(response.error == null){
+      _saveAndRedirectToHome(response.data as UserModel);
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.error.toString())));
+    }
+  }
+  void  _saveAndRedirectToHome(UserModel user) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('token', user.token??'');
+    await pref.setString('email', user.email??'');
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+  }
+  String? get _errorText{
+    final text = passwordController.text;
+    if(text.isEmpty){
+      return '';
+    }if(text.length<6){
+      return 'Required at least 6 chars';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // endDrawer: CreateMenu(context),
-      endDrawer: SignOutMenu(context),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxScrolled) => [
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: Color.fromRGBO(222, 215, 209, 1),
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                    maintainState: false,
-                  ),
-                );
-              },
-              icon: Image.asset('images/icon/icon.png'),
-            ),
-            toolbarHeight: 70,
-            leadingWidth: 100,
-            actions: [
-              Builder(
-                builder: (context) => IconButton(
-                  icon: Image.asset('images/element/menu.png'),
-                  iconSize: 70,
-                  onPressed: () => Scaffold.of(context).openEndDrawer(),
-                ),
+      endDrawer: CreateMenu(context),
+      body: Form(
+        key: formKey,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxScrolled) => [
+            SliverAppBar(
+              pinned: true,
+              backgroundColor: Color.fromRGBO(222, 215, 209, 1),
+              elevation: 0,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                      maintainState: false,
+                    ),
+                  );
+                },
+                icon: Image.asset('images/icon/icon.png'),
               ),
-            ],
-          ),
-        ],
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                color: Color.fromRGBO(222, 215, 209, 1),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: [
-                    Text(
-                      '歡迎回來',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          width: 138,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(30.0),
-                              topLeft: Radius.circular(30.0),
-                            ),
-                            color: Colors.white,
-                          ),
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "登入",
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 138,
-                          height: 40,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CreateAccount(),
-                                  maintainState: false,
-                                ),
-                              );
-                            },
-                            child: Text(
-                              "註冊",
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 40),
-                      height: 2.0,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 40,
-                        ),
-                        Text(
-                          "*",
-                          style: TextStyle(fontSize: 18, color: Colors.red),
-                        ),
-                        Text(
-                          "用戶名稱",
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width - 180,
-                        ),
-                        Text(
-                          "*必填",
-                          style: TextStyle(fontSize: 18, color: Colors.red),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 30.0),
-                      width: 300,
-                      height: 60,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: '請輸入您的用戶名稱',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
+              toolbarHeight: 70,
+              leadingWidth: 100,
+              actions: [
+                Builder(
+                  builder: (context) => IconButton(
+                    icon: Image.asset('images/element/menu.png'),
+                    iconSize: 70,
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  color: Color.fromRGBO(222, 215, 209, 1),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      Text(
+                        '歡迎回來',
+                        style: TextStyle(fontSize: 20),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 40,
-                        ),
-                        Text(
-                          "*",
-                          style: TextStyle(fontSize: 18, color: Colors.red),
-                        ),
-                        Text(
-                          "密碼",
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0),
-                      width: 300,
-                      height: 60,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: '請輸入您的密碼',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
+                      SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width - 90,
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            '忘記密碼？',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 40,
-                        ),
-                        Text(
-                          "*",
-                          style: TextStyle(fontSize: 18, color: Colors.red),
-                        ),
-                        Text(
-                          "驗證碼",
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 50),
-                          width: 150,
-                          height: 60,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: '請輸入驗證碼',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide.none,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 138,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(30.0),
+                                topLeft: Radius.circular(30.0),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "登入",
+                                style:
+                                TextStyle(fontSize: 18, color: Colors.black),
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            color: Color.fromRGBO(195, 195, 195, 1),
+                          Container(
+                            width: 138,
+                            height: 40,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CreateAccount(),
+                                    maintainState: false,
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "註冊",
+                                style:
+                                TextStyle(fontSize: 18, color: Colors.black),
+                              ),
+                            ),
                           ),
-                          child: Center(
-                            child: Text(
-                              '1490',
-                              style: TextStyle(fontSize: 16),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 40),
+                        height: 2.0,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 40,
+                          ),
+                          Text(
+                            "*",
+                            style: TextStyle(fontSize: 18, color: Colors.red),
+                          ),
+                          Text(
+                            "電子信箱",
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 180,
+                          ),
+                          Text(
+                            "*必填",
+                            style: TextStyle(fontSize: 18, color: Colors.red),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        width: 300,
+                        height: 85,
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailController,
+                          validator: (val) => val!.isEmpty ? 'Can\'t be empty' : null,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: '請輸入您的電子信箱',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
                             ),
                           ),
                         ),
-                        IconButton(
-                            onPressed: () {
-                              print('press');
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 40,
+                          ),
+                          Text(
+                            "*",
+                            style: TextStyle(fontSize: 18, color: Colors.red),
+                          ),
+                          Text(
+                            "密碼",
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.0),
+                        width: 300,
+                        height: 85,
+                        child: TextFormField(
+                          controller: passwordController,
+                          validator: (val) => val!.isEmpty ? 'Can\'t be empty' : null,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            errorText: _errorText,
+                            hintText: '請輸入您的密碼',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: MediaQuery.of(context).size.width - 90,),
+                          GestureDetector(
+                            child: Text('忘記密碼？',style: TextStyle(color: Colors.black),),
+                            onTap: (){
+                              print('pressed');
                             },
-                            icon: Icon(FontAwesomeIcons.redoAlt)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        buildButtionPop('取消', 80, 52, context, HomePage()),
-                        buildButtionPushAndRem('登入', 80, 52, context, HomePage()),
-                      ],
-                    ),
-                  ],
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          buildButtionPop('取消', 80, 52, context, HomePage()),
+                          kbuildButtionPushAndRem('登入', 80, 52, context, (){
+                            if(formKey.currentState!.validate()){
+                              _loginUser();
+                            }
+                          }),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 }

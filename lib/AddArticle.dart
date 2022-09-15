@@ -11,8 +11,6 @@ import 'HomePage.dart';
 import 'function/BuildButton.dart';
 
 class AddArticle extends StatefulWidget {
-  // final Data post;
-  // AddArticle({required this.post});
   const AddArticle({Key? key}) : super(key: key);
 
   @override
@@ -126,7 +124,7 @@ class _AddArticleState extends State<AddArticle> {
                                             print('餐廳');
                                           },
                                           child: Text(
-                                            '餐廳專區',
+                                            "餐廳專區",
                                             style: contextStyle,
                                           ),
                                         ),

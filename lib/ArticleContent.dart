@@ -5,9 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/ArticleComments.dart';
 import 'package:ones_blog/bloc/post_bloc.dart';
 import 'package:ones_blog/model/post_model.dart';
+import 'package:ones_blog/repository/comment_repo.dart';
 import 'package:ones_blog/repository/post_repo.dart';
 import 'Constant.dart';
 import 'CreateMenu.dart';
+import 'bloc/comment_bloc.dart';
 import 'bloc/post_event.dart';
 import 'bloc/post_state.dart';
 
@@ -41,11 +43,13 @@ class _ArticleContentState extends State<ArticleContent> {
       body: BlocBuilder<PostBloc, PostState>(
         builder: (context, state) {
           if(state is LoadingState){
-            return CircularProgressIndicator();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }else if(state is FetchSuccess){
-            if(state.posts.data[widget.index].categoryId == 1){
+            if(state.posts.data[widget.index].locationId == 1){
               category = "餐廳專區";
-            }else if(state.posts.data[widget.index].categoryId == 2){
+            }else if(state.posts.data[widget.index].locationId == 2){
               category = "景點專區";
             }else{
               category = "旅宿專區";
@@ -215,7 +219,10 @@ class _ArticleContentState extends State<ArticleContent> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ArticleComments(),
+                                                BlocProvider(
+                                                  create: (context) => CommentBloc(CommentRepository())..add(FetchCommentEvent()),
+                                                  child: ArticleComments(),
+                                                ),
                                             maintainState: false,
                                           ),
                                         );

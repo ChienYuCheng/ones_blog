@@ -27,8 +27,7 @@ class PostModel{
 class Data {
   String createdAt;
   User user;
-  int storeId;
-  int categoryId;
+  int locationId;
   String title;
   String content;
   String publishedAt;
@@ -37,8 +36,7 @@ class Data {
   Data(
       {required this.createdAt,
         required this.user,
-        required this.storeId,
-        required this.categoryId,
+        required this.locationId,
         required this.title,
         required this.content,
         required this.publishedAt,
@@ -51,8 +49,7 @@ class Data {
     return Data(
       createdAt: json['created_at'],
       user: user,
-      storeId: json['store_id'],
-      categoryId: json['category_id'],
+      locationId: json['location_id'],
       title: json['title']as String,
       content: json['content']as String,
       publishedAt: json['published_at']as String,
@@ -68,7 +65,6 @@ class User {
   String name;
   String email;
   String emailVerifiedAt;
-  bool isStore;
   int loginTypeId;
 
   User(
@@ -78,7 +74,6 @@ class User {
         required this.name,
         required this.email,
         required this.emailVerifiedAt,
-        required this.isStore,
         required this.loginTypeId});
 
   factory User.fromJson(Map<String, dynamic> json){
@@ -89,7 +84,6 @@ class User {
       name: json['name'],
       email: json['email'],
       emailVerifiedAt: json['email_verified_at'],
-      isStore: json['is_store'],
       loginTypeId: json['login_type_id']
     );
   }

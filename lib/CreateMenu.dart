@@ -5,6 +5,7 @@ import 'package:ones_blog/BecomeStore.dart';
 import 'package:ones_blog/UserInformation.dart';
 import 'package:ones_blog/bloc/post_bloc.dart';
 import 'package:ones_blog/repository/post_repo.dart';
+import 'package:ones_blog/service/user_service.dart';
 import 'AboutUs.dart';
 import 'Community.dart';
 import 'HomePage.dart';
@@ -53,7 +54,7 @@ Container CreateMenu(BuildContext context) {
                       'images/element/community.png',
                       '社群',
                       context,
-                      BlocProvider(
+                      BlocProvider<PostBloc>(
                         create: (context) => PostBloc(PostRepository()),
                         child: Community(),
                       ),
@@ -74,8 +75,15 @@ Container CreateMenu(BuildContext context) {
                 children: [
                   buildMenuButton('images/element/becomeStore.png', '成為店家',
                       context, BecomeStore(), 40),
-                  buildMenuButtonPop('images/element/logout.png', '登出', context,
-                      HomePage(), 40),
+                  kbuildMenuButtonPop(
+                      'images/element/logout.png', '登出', context, () {
+                    logout().then((value) => {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginAccount()),
+                              (route) => false)
+                        });
+                  }, 40),
                 ],
               ),
             ],
