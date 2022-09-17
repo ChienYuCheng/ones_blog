@@ -25,46 +25,10 @@ class _LoginAccountState extends State<LoginAccount> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  String deviceName = '';
 
   void _loginUser() async {
-    ApiResponse response = await login(emailController.text, passwordController.text, deviceName);
-    try{
-      if(kIsWeb){
-        WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
-        print('Running on ${webBrowserInfo.userAgent}');
-      }else if(Platform.isAndroid){
-        AndroidDeviceInfo android = await deviceInfo.androidInfo;
-        print('Running on ${android.brand}');
-        setState(() {
-          deviceName = android.brand.toString();
-        });
-      }else if(Platform.isIOS){
-        IosDeviceInfo ios = await deviceInfo.iosInfo;
-        print('Running on ${ios.utsname.machine}');
-        setState(() {
-          deviceName = ios.model.toString();
-        });
-      }else if (Platform.isWindows) {
-        WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;
-        print(windowsInfo.toMap().toString());
-        setState(() {deviceName = windowsInfo.toMap().toString();});
-      }
-      else if (Platform.isMacOS) {
-        MacOsDeviceInfo macOSInfo = await deviceInfo.macOsInfo;
-        print(macOSInfo.toMap().toString());
-        setState(() {deviceName = macOSInfo.toMap().toString();});
-      }
-      else if (Platform.isLinux) {
-        LinuxDeviceInfo linuxInfo = await deviceInfo.linuxInfo;
-        print(linuxInfo.toMap().toString());
-        setState(() {deviceName = linuxInfo.toMap().toString();});
-      }
-    }catch(e){
-      print('login Error');
-      print(e);
-    }
+    ApiResponse response = await login(emailController.text, passwordController.text);
+
     if(response.error == null){
       _saveAndRedirectToHome(response.data as UserModel);
     }else{
@@ -78,6 +42,7 @@ class _LoginAccountState extends State<LoginAccount> {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
   }
   String? get _errorText{
+    loadDeviceInfo();
     final text = passwordController.text;
     if(text.isEmpty){
       return '';

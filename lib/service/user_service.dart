@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/api_response.dart';
 
 //login
-Future<ApiResponse> login(String email, String password, String deviceName) async {
+Future<ApiResponse> login(String email, String password) async {
   ApiResponse apiResponse = ApiResponse();
 
   try{
@@ -50,8 +50,9 @@ Future<ApiResponse> login(String email, String password, String deviceName) asyn
 }
 
 //register
-Future<ApiResponse> register(String name, String email, String password, String deviceName) async {
+Future<ApiResponse> register(String name, String email, String password) async {
   ApiResponse apiResponse = ApiResponse();
+
   try{
     print('11');
     final response = await http.post(
@@ -141,4 +142,49 @@ Future<String> getUserEmail() async {
 Future<bool> logout() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   return await pref.remove('token');
+}
+
+DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+String deviceName = '';
+
+Future<String?> loadDeviceInfo() async {
+  try{
+    if(kIsWeb){
+      WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
+      print('Running on ${webBrowserInfo.userAgent}');
+      deviceName = webBrowserInfo.userAgent.toString();
+      return webBrowserInfo.userAgent;
+    }else if(Platform.isAndroid){
+      AndroidDeviceInfo android = await deviceInfo.androidInfo;
+      print('Running on ${android.brand}');
+      deviceName = android.brand.toString();
+      return deviceName;
+    }else if(Platform.isIOS){
+      IosDeviceInfo ios = await deviceInfo.iosInfo;
+      print('Running on ${ios.utsname.machine}');
+      deviceName = ios.utsname.machine.toString();
+      return deviceName;
+    }else if (Platform.isWindows) {
+      WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;
+      print(windowsInfo.toMap().toString());
+      deviceName = windowsInfo.toMap().toString();
+      return deviceName;
+    }
+    else if (Platform.isMacOS) {
+      MacOsDeviceInfo macOSInfo = await deviceInfo.macOsInfo;
+      print(macOSInfo.toMap().toString());
+      deviceName = macOSInfo.toMap().toString();
+      return deviceName;
+    }
+    else if (Platform.isLinux) {
+      LinuxDeviceInfo linuxInfo = await deviceInfo.linuxInfo;
+      print(linuxInfo.toMap().toString());
+      deviceName = linuxInfo.toMap().toString();
+      return deviceName;
+    }
+  }catch(e){
+    print("Register Error");
+    print(e);
+  }
+  return null;
 }

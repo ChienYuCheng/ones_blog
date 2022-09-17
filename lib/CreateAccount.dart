@@ -28,47 +28,11 @@ class _CreateAccountState extends State<CreateAccount> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController rePasswordController = TextEditingController();
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  String deviceName = '';
+
 
   void _registerUser() async {
-    ApiResponse response = await register(nameController.text, emailController.text, passwordController.text, deviceName);
+    ApiResponse response = await register(nameController.text, emailController.text, passwordController.text);
 
-    try{
-      if(kIsWeb){
-        WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
-        print('Running on ${webBrowserInfo.userAgent}');
-      }else if(Platform.isAndroid){
-        AndroidDeviceInfo android = await deviceInfo.androidInfo;
-        print('Running on ${android.brand}');
-        setState(() {
-          deviceName = android.brand.toString();
-        });
-      }else if(Platform.isIOS){
-        IosDeviceInfo ios = await deviceInfo.iosInfo;
-        print('Running on ${ios.utsname.machine}');
-        setState(() {
-          deviceName = ios.model.toString();
-        });
-      }else if (Platform.isWindows) {
-        WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;
-        print(windowsInfo.toMap().toString());
-        setState(() {deviceName = windowsInfo.toMap().toString();});
-      }
-      else if (Platform.isMacOS) {
-        MacOsDeviceInfo macOSInfo = await deviceInfo.macOsInfo;
-        print(macOSInfo.toMap().toString());
-        setState(() {deviceName = macOSInfo.toMap().toString();});
-      }
-      else if (Platform.isLinux) {
-        LinuxDeviceInfo linuxInfo = await deviceInfo.linuxInfo;
-        print(linuxInfo.toMap().toString());
-        setState(() {deviceName = linuxInfo.toMap().toString();});
-      }
-    }catch(e){
-      print("Register Error");
-      print(e);
-    }
     if(response.error == null){
       _saveAndRedirectToHome(response.data as UserModel);
     }else{
@@ -92,6 +56,7 @@ class _CreateAccountState extends State<CreateAccount> {
     return null;
   }
   String? get _repassErrorText{
+    loadDeviceInfo();
     final text1 = passwordController.text;
     final text2 = rePasswordController.text;
     if(text1 == text2){
@@ -166,6 +131,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             height: 40,
                             child: TextButton(
                               onPressed: () {
+                                loadDeviceInfo();
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
