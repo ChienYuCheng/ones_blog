@@ -17,6 +17,8 @@ const logoutUrl = '/logout';
 const userUrl = '/user';
 const postsUrl = '/posts';
 const commentsUrl = '/comments';
+const verifyUrl = '/verifyCode';
+const locationsUrl = '/locations';
 
 // ---- ERRORS ----
 const serverError = 'Server Error';

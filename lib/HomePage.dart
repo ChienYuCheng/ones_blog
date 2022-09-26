@@ -1,15 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ones_blog/LodgingArea.dart';
 import 'package:ones_blog/RestaurantArea.dart';
 import 'package:ones_blog/SignOutMenu.dart';
 import 'package:ones_blog/SpotsArea.dart';
 import 'package:ones_blog/StoreInformation.dart';
+import 'package:ones_blog/bloc/location_bloc.dart';
+import 'package:ones_blog/model/location_model.dart';
+import 'package:ones_blog/repository/location_repo.dart';
 import 'CreateMenu.dart';
 import 'function/BuildButton.dart';
 import 'function/PlaceElement.dart';
 import 'function/BuildDots.dart';
+
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,9 +26,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   bool _verticalList = true;
   ScrollController _scrollController = ScrollController();
   int restaurantCurrentPos = 0, spotsCurrentPos = 0, lodgingCurrentPos = 0;
+  final List<String> imgList = [
+    "https://randomuser.me/api/portraits/med/women/73.jpg",
+    "https://randomuser.me/api/portraits/med/men/15.jpg",
+    "https://randomuser.me/api/portraits/med/men/80.jpg"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +143,10 @@ class _HomePageState extends State<HomePage> {
                           scrollDirection: Axis.horizontal,
                           onPageChanged: (index, reason) {
                             setState(() {
-                              restaurantCurrentPos = index;
+                              spotsCurrentPos = index;
                             });
                           }),
-                      items: [1, 2, 3, 4, 5].map((i) {
+                      items: imgList.map((i) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
@@ -141,10 +156,7 @@ class _HomePageState extends State<HomePage> {
                                   color: Color.fromRGBO(198, 201, 203, 1)),
                               child: GestureDetector(
                                 child: Center(
-                                  child: Text(
-                                    'text $i',
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
+                                  child: Image.network(i, fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
                                 ),
                                 onTap: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));

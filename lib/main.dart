@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       //   create: (context) => PostBloc(PostRepository()),
       //   child: Community(),
       // ),
-      home: LoginAccount(),
+      home: HomePage(),
     );
   }
 }

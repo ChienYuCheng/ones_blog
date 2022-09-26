@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ones_blog/Constant.dart';
@@ -14,7 +15,6 @@ Future<ApiResponse> login(String email, String password) async {
   ApiResponse apiResponse = ApiResponse();
 
   try{
-    print('1');
     final response = await http.post(
       Uri.parse(baseURL + loginUrl),
       headers: {'Accept' : 'application/json'},
@@ -27,22 +27,22 @@ Future<ApiResponse> login(String email, String password) async {
     print(baseURL+loginUrl);
     switch(response.statusCode){
       case 200:
-        print("2");
+        print("登入成功");
         apiResponse.data = UserModel.fromJson(jsonDecode(response.body));
         break;
       case 422:
-        print("3");
+        print("422(login)");
         final errors = jsonDecode(response.body)['data'];
         print(jsonDecode(response.body)['data']);
         apiResponse.error = errors[errors.keys.elementAt(0)][0];
         break;
       default:
-        print("5");
+        print("錯誤1");
         apiResponse.error = somethingWentWrong;
         break;
     }
   }catch(e){
-    print("6");
+    print("錯誤2");
     print(e);
     apiResponse.error = serverError;
   }
@@ -54,7 +54,6 @@ Future<ApiResponse> register(String name, String email, String password) async {
   ApiResponse apiResponse = ApiResponse();
 
   try{
-    print('11');
     final response = await http.post(
         Uri.parse(baseURL + registerUrl),
         headers: {'Accept' : 'application/json'},
@@ -68,75 +67,74 @@ Future<ApiResponse> register(String name, String email, String password) async {
     );
     switch(response.statusCode){
       case 201:
-        print('22');
+        print('註冊');
         apiResponse.data = UserModel.fromJson(jsonDecode(response.body));
         break;
       case 422:
-        print('33');
+        print('422(register)');
         final errors = jsonDecode(response.body)['data'];
         apiResponse.error = errors[errors.keys.elementAt(0)][0];
         break;
       default:
-        print('55');
+        print('Something went wrong!');
         apiResponse.error = somethingWentWrong;
         break;
     }
   }catch(e){
-    print('66');
+    print('Server Error');
     print(e);
     apiResponse.error = serverError;
   }
   return apiResponse;
 }
 
-//User
-// Future<ApiResponse> getUserDetail() async{
-//   ApiResponse apiResponse = ApiResponse();
-//   try{
-//     String token = await getToken();
-//     final response = await http.get(
-//       Uri.parse(baseURL + userUrl),
-//       headers: {
-//         'Accept' : 'application/json',
-//         'token' : 'Bearer $token'
-//       },
-//     );
-//     switch(response.statusCode){
-//       case 200:
-//         apiResponse.data = UserModel.fromJson(jsonDecode(response.body));
-//         break;
-//       case 401:
-//         apiResponse.error = unauthorized;
-//         break;
-//       case 404:
-//         final errors = jsonDecode(response.body)['data'];
-//         apiResponse.error = errors[errors.keys.elementAt(0)][0];
-//         break;
-//       case 422:
-//         final errors = jsonDecode(response.body)['data'];
-//         apiResponse.error = errors[errors.keys.elementAt(0)][0];
-//         break;
-//       default:
-//         apiResponse.error = somethingWentWrong;
-//         break;
-//     }
-//   }catch(e){
-//     apiResponse.error = serverError;
-//   }
-//   return apiResponse;
+Future<ApiResponse> verifyCode(String name, String email, String code) async {
+  ApiResponse apiResponse = ApiResponse();
+
+  try{
+    final response = await http.post(
+        Uri.parse(baseURL + verifyUrl),
+        headers: {'Accept' : 'application/json'},
+        body: {
+          'name' : name,
+          'email': email,
+          'code' : code
+        }
+    );
+    switch(response.statusCode){
+      case 200:
+        print('200 : 驗證');
+        apiResponse.data = UserModel.fromJson(jsonDecode(response.body));
+        break;
+      case 422:
+        print('422(verifyCode)');
+        final errors = jsonDecode(response.body)['data'];
+        apiResponse.error = errors[errors.keys.elementAt(0)][0];
+        break;
+      default:
+        print('Something went wrong(verifyCode)!');
+        apiResponse.error = somethingWentWrong;
+        break;
+    }
+  }catch(e){
+    print('Server Error(verify)');
+    print('catch error : $e');
+    apiResponse.error = serverError;
+  }
+  return apiResponse;
+}
+
+
+// Future<String> getToken() async {
+//   SharedPreferences pref = await SharedPreferences.getInstance();
+//   return pref.getString('token') ?? '';
 // }
-
-//get token
-Future<String> getToken() async {
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  return pref.getString('token') ?? '';
-}
-
-//get user email
-Future<String> getUserEmail() async {
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  return pref.getString('email') ?? '';
-}
+//
+// //get user email
+// Future<String> getUserEmail() async {
+//   SharedPreferences pref = await SharedPreferences.getInstance();
+//   return pref.getString('email') ?? '';
+// }
 
 //logout
 Future<bool> logout() async {
@@ -151,17 +149,17 @@ Future<String?> loadDeviceInfo() async {
   try{
     if(kIsWeb){
       WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
-      print('Running on ${webBrowserInfo.userAgent}');
+      print('1 Running on ${webBrowserInfo.userAgent}');
       deviceName = webBrowserInfo.userAgent.toString();
       return webBrowserInfo.userAgent;
     }else if(Platform.isAndroid){
       AndroidDeviceInfo android = await deviceInfo.androidInfo;
-      print('Running on ${android.brand}');
+      print('2 Running on ${android.brand}');
       deviceName = android.brand.toString();
       return deviceName;
     }else if(Platform.isIOS){
       IosDeviceInfo ios = await deviceInfo.iosInfo;
-      print('Running on ${ios.utsname.machine}');
+      print('3 Running on ${ios.utsname.machine}');
       deviceName = ios.utsname.machine.toString();
       return deviceName;
     }else if (Platform.isWindows) {
@@ -169,14 +167,12 @@ Future<String?> loadDeviceInfo() async {
       print(windowsInfo.toMap().toString());
       deviceName = windowsInfo.toMap().toString();
       return deviceName;
-    }
-    else if (Platform.isMacOS) {
+    }else if (Platform.isMacOS) {
       MacOsDeviceInfo macOSInfo = await deviceInfo.macOsInfo;
       print(macOSInfo.toMap().toString());
       deviceName = macOSInfo.toMap().toString();
       return deviceName;
-    }
-    else if (Platform.isLinux) {
+    }else if (Platform.isLinux) {
       LinuxDeviceInfo linuxInfo = await deviceInfo.linuxInfo;
       print(linuxInfo.toMap().toString());
       deviceName = linuxInfo.toMap().toString();

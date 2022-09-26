@@ -2,11 +2,15 @@ import 'dart:io' show Platform;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/CreateAccount.dart';
 import 'package:ones_blog/SignOutMenu.dart';
+import 'package:ones_blog/bloc/location_bloc.dart';
+import 'package:ones_blog/bloc/post_bloc.dart';
 import 'package:ones_blog/model/api_response.dart';
 import 'package:ones_blog/model/user_model.dart';
+import 'package:ones_blog/repository/location_repo.dart';
 import 'package:ones_blog/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'CreateMenu.dart';
@@ -26,6 +30,12 @@ class _LoginAccountState extends State<LoginAccount> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    loadDeviceInfo();
+  }
+
   void _loginUser() async {
     ApiResponse response = await login(emailController.text, passwordController.text);
 
@@ -42,7 +52,6 @@ class _LoginAccountState extends State<LoginAccount> {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
   }
   String? get _errorText{
-    loadDeviceInfo();
     final text = passwordController.text;
     if(text.isEmpty){
       return '';
@@ -67,15 +76,20 @@ class _LoginAccountState extends State<LoginAccount> {
               elevation: 0,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                      maintainState: false,
-                    ),
-                  );
-                },
-                icon: Image.asset('images/icon/icon.png'),
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => BlocProvider(
+                    //       create: (context) =>
+                    //           LocationBloc(LocationRepository())..add(FetchLocationEvent()),
+                    //       child: HomePage(),
+                    //     ),
+                    //     // maintainState: false,
+                    //   ),
+                    // );
+                  },
+                  icon: Image.asset('images/icon/icon.png'),
               ),
               toolbarHeight: 70,
               leadingWidth: 100,
@@ -246,7 +260,7 @@ class _LoginAccountState extends State<LoginAccount> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          buildButtionPop('取消', 80, 52, context, HomePage()),
+                          buildButtionPushAndRem('取消', 80, 52, context, HomePage()),
                           kbuildButtionPushAndRem('登入', 80, 52, context, (){
                             if(formKey.currentState!.validate()){
                               _loginUser();

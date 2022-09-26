@@ -76,7 +76,7 @@ Container CreateMenu(BuildContext context) {
                   buildMenuButton('images/element/becomeStore.png', '成為店家',
                       context, BecomeStore(), 40),
                   kbuildMenuButtonPop(
-                      'images/element/logout.png', '登出', context, () {
+                      'images/element/login.png', '登入', context, () {
                     logout().then((value) => {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
