@@ -16,7 +16,9 @@ import 'package:ones_blog/screens/home_screen.dart';
 import 'package:ones_blog/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'CreateMenu.dart';
-import 'bloc/location_bloc.dart';
+import 'bloc/lodging_bloc.dart';
+import 'bloc/restaurant_bloc.dart';
+import 'bloc/spot_bloc.dart';
 import 'function/BuildButton.dart';
 import 'model/api_response.dart';
 
@@ -239,7 +241,20 @@ class _CreateAccountState extends State<CreateAccount> {
               elevation: 0,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>MultiBlocProvider(
+                    providers: [
+                      BlocProvider<RestaurantBloc>(
+                        create: (BuildContext context) => RestaurantBloc(LocationRepository()),
+                      ),
+                      BlocProvider<SpotBloc>(
+                        create: (BuildContext context) => SpotBloc(LocationRepository()),
+                      ),
+                      BlocProvider<LodgingBloc>(
+                        create: (BuildContext context) => LodgingBloc(LocationRepository()),
+                      ),
+                    ],
+                    child: HomePage(),
+                  ),), (route) => false);
                 },
                 icon: Image.asset('images/icon/icon.png'),
               ),

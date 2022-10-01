@@ -7,7 +7,6 @@ import 'package:ones_blog/model/post_model.dart';
 import 'package:ones_blog/repository/post_repo.dart';
 
 TextButton CreateArticle(String type, String title, String route, BuildContext context,int index) {
-  // final int index;
   return TextButton(
     onPressed: () {
       Navigator.push(

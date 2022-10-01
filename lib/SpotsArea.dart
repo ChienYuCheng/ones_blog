@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/AboutUs.dart';
 import 'package:ones_blog/LoginAccount.dart';
@@ -7,6 +8,7 @@ import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'Leaderboard.dart';
+import 'bloc/spot_bloc.dart';
 import 'function/BuildMenuButton.dart';
 import 'function/CreateAreaList.dart';
 
@@ -18,6 +20,16 @@ class SpotsArea extends StatefulWidget {
 }
 
 class _SpotsAreaState extends State<SpotsArea> {
+
+  late SpotBloc spotBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    spotBloc = BlocProvider.of<SpotBloc>(context);
+    spotBloc.add(FetchSpotEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,37 +85,36 @@ class _SpotsAreaState extends State<SpotsArea> {
           ),
         ],
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                color: Color.fromRGBO(222, 215, 209, 1),
-                height: MediaQuery.of(context).size.height + 1700,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    CreateAreaList(
-                        '阿里磅生態休閒農場', '新北市石門區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '野柳地質公園', '新北市萬里區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '雲仙樂園', '新北市烏來區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '鹿角溪人工濕地', '新北市樹林區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '新北市立十三行博物館', '新北市八里區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '白沙灣自然中心', '新北市石門區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '雙溪平林休閒農場', '新北市雙溪區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '新北市立鶯歌陶瓷博物館', '新北市鶯歌區', 'images/element/test.jpeg'),
-                  ],
-                ),
-              ),
-            ],
+          child: Container(
+            color: Color.fromRGBO(222, 215, 209, 1),
+            height: MediaQuery.of(context).size.height + 1700,
+            width: MediaQuery.of(context).size.width,
+            child: BlocBuilder<SpotBloc, SpotState>(
+                builder: (context, state) {
+                  if (state is LoadingSpot) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is FetchedSpot){
+                    return ListView.builder(
+                        physics: new NeverScrollableScrollPhysics(),
+                        itemCount: state.spots.data.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              CreateAreaList(
+                                  state.spots.data[index].name,
+                                  state.spots.data[index].address,
+                                  state.spots.data[index].avgScore,
+                                  'images/element/test.jpeg')
+                            ],
+                          );
+                        });
+                  } else if (state is SpotError) {
+                    return ErrorWidget(state.message.toString());
+                  }
+                  return Container();
+                }),
           ),
         ),
       ),

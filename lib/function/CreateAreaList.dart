@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ones_blog/Constant.dart';
 
-TextButton CreateAreaList(String title, String address, String route) {
+TextButton CreateAreaList(String title, String address, String avgScore, String route) {
   return TextButton(
     onPressed: () {},
     child: Container(
@@ -22,46 +22,58 @@ TextButton CreateAreaList(String title, String address, String route) {
               image: AssetImage(route),
             ),
           ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Row(
+          Column(
             children: [
               SizedBox(
-                width: 10.0,
+                height: 10.0,
               ),
-              Text(
-                title,
-                style: titleStyle,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 10.0,
-              ),
-              Text(
-                address,
-                style: contextStyle,
-              ),
-              Spacer(),
-              Icon(
-                Icons.star,
-                color: Color.fromRGBO(241, 208, 10, 1),
-              ),
-              Text(
-                '4.5',
-                style: contextStyle,
+              Row(
+                children: [
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    title,
+                    style: titleStyle,
+                  ),
+                ],
               ),
               SizedBox(
-                width: 5.0,
+                height: 20.0,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Container(
+                    width: 100,
+                    child: Text(
+                      address,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Spacer(),
+                  Icon(
+                    Icons.star,
+                    color: Color.fromRGBO(241, 208, 10, 1),
+                  ),
+                  Text(
+                    avgScore,
+                    style: contextStyle,
+                  ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                ],
               ),
             ],
-          ),
+          )
         ],
       ),
     ),

@@ -116,7 +116,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,)));
                                 },
                               ),
                             );
@@ -173,7 +173,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,)));
                                 },
                               ),
                             );
@@ -229,7 +229,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,)));
                                 },
                               ),
                             );

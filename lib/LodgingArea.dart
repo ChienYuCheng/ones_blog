@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/AboutUs.dart';
 import 'package:ones_blog/LoginAccount.dart';
@@ -7,6 +8,7 @@ import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'Leaderboard.dart';
+import 'bloc/lodging_bloc.dart';
 import 'function/BuildMenuButton.dart';
 import 'function/CreateAreaList.dart';
 
@@ -18,6 +20,16 @@ class LodgingArea extends StatefulWidget {
 }
 
 class _LodgingAreaState extends State<LodgingArea> {
+
+  late LodgingBloc lodgingBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    lodgingBloc = BlocProvider.of<LodgingBloc>(context);
+    lodgingBloc.add(FetchLodgingEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,37 +85,36 @@ class _LodgingAreaState extends State<LodgingArea> {
           ),
         ],
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                color: Color.fromRGBO(222, 215, 209, 1),
-                height: MediaQuery.of(context).size.height + 1700,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    CreateAreaList(
-                        'Singleinn單人房', '新北市板橋區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '台北新板希爾頓酒店', '新北市板橋區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '九份未眠者花園民宿', '新北市瑞芳區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '板橋凱撒大飯店', '新北市板橋區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '福容大飯店 台北二館', '新北市深坑區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '九份第一站背包客青旅', '新北市瑞芳區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '將捷金鬱金香酒店', '新北市淡水區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '九份故事樓民宿', '新北市瑞芳區', 'images/element/test.jpeg'),
-                  ],
-                ),
-              ),
-            ],
+          child: Container(
+            color: Color.fromRGBO(222, 215, 209, 1),
+            height: MediaQuery.of(context).size.height + 1700,
+            width: MediaQuery.of(context).size.width,
+            child: BlocBuilder<LodgingBloc, LodgingState>(
+                builder: (context, state) {
+                  if (state is LoadingLodging) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is FetchedLodging){
+                    return ListView.builder(
+                        physics: new NeverScrollableScrollPhysics(),
+                        itemCount: state.lodgings.data.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              CreateAreaList(
+                                  state.lodgings.data[index].name,
+                                  state.lodgings.data[index].address,
+                                  state.lodgings.data[index].avgScore,
+                                  'images/element/test.jpeg')
+                            ],
+                          );
+                        });
+                  } else if (state is LodgingError) {
+                    return ErrorWidget(state.message.toString());
+                  }
+                  return Container();
+                }),
           ),
         ),
       ),

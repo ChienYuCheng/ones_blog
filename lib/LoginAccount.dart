@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/CreateAccount.dart';
 import 'package:ones_blog/SignOutMenu.dart';
-import 'package:ones_blog/bloc/location_bloc.dart';
 import 'package:ones_blog/bloc/post_bloc.dart';
 import 'package:ones_blog/model/api_response.dart';
 import 'package:ones_blog/model/user_model.dart';
@@ -15,6 +14,9 @@ import 'package:ones_blog/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
+import 'bloc/lodging_bloc.dart';
+import 'bloc/restaurant_bloc.dart';
+import 'bloc/spot_bloc.dart';
 import 'function/BuildButton.dart';
 
 class LoginAccount extends StatefulWidget {
@@ -76,18 +78,20 @@ class _LoginAccountState extends State<LoginAccount> {
               elevation: 0,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => BlocProvider(
-                    //       create: (context) =>
-                    //           LocationBloc(LocationRepository())..add(FetchLocationEvent()),
-                    //       child: HomePage(),
-                    //     ),
-                    //     // maintainState: false,
-                    //   ),
-                    // );
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>MultiBlocProvider(
+                    providers: [
+                      BlocProvider<RestaurantBloc>(
+                        create: (BuildContext context) => RestaurantBloc(LocationRepository()),
+                      ),
+                      BlocProvider<SpotBloc>(
+                        create: (BuildContext context) => SpotBloc(LocationRepository()),
+                      ),
+                      BlocProvider<LodgingBloc>(
+                        create: (BuildContext context) => LodgingBloc(LocationRepository()),
+                      ),
+                    ],
+                    child: HomePage(),
+                  ),), (route) => false);                    // Navigator.pushReplacement(
                   },
                   icon: Image.asset('images/icon/icon.png'),
               ),

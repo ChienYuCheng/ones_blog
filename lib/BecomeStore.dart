@@ -324,7 +324,7 @@ class _BecomeStoreState extends State<BecomeStore> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         buildButtionPop('取消', 80, 52, context, HomePage()),
-                        buildButtion('發佈', 80, 52, context, StoreInformation()),
+                        buildButtion('發佈', 80, 52, context, StoreInformation(index: 0,)),
                       ],
                     ),
                   ],

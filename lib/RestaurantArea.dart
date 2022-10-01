@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/Leaderboard.dart';
 import 'package:ones_blog/LoginAccount.dart';
@@ -7,6 +8,8 @@ import 'AboutUs.dart';
 import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
+import 'bloc/post_bloc.dart';
+import 'bloc/restaurant_bloc.dart';
 import 'function/BuildMenuButton.dart';
 import 'function/CreateAreaList.dart';
 
@@ -18,6 +21,15 @@ class RestaurantArea extends StatefulWidget {
 }
 
 class _RestaurantAreaState extends State<RestaurantArea> {
+  late RestaurantBloc restaurantBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    restaurantBloc = BlocProvider.of<RestaurantBloc>(context);
+    restaurantBloc.add(FetchRestaurantEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,40 +85,56 @@ class _RestaurantAreaState extends State<RestaurantArea> {
           ),
         ],
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                color: Color.fromRGBO(222, 215, 209, 1),
-                height: MediaQuery.of(context).size.height + 1700,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    CreateAreaList(
-                        '阿妃餃子館', '新北市永和區', 'images/element/test.jpeg'),
-                    CreateAreaList('SKYLARK加州風洋食館-\n新店家樂福店', '新北市新店區',
-                        'images/element/test.jpeg'),
-                    CreateAreaList(
-                        'TINA廚房-鶯歌店', '新北市鶯歌區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '心伝的家', '新北市林口區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '哩賀涼麵', '新北市永和區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '粩泰泰泰式料理', '新北市板橋區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '田中芳園養生食坊', '新北市金山區', 'images/element/test.jpeg'),
-                    CreateAreaList(
-                        '原粹蔬食作', '新北市新店區', 'images/element/test.jpeg'),
-                  ],
-                ),
-              ),
-            ],
+          child: Container(
+            color: Color.fromRGBO(222, 215, 209, 1),
+            height: MediaQuery.of(context).size.height + 1700,
+            width: MediaQuery.of(context).size.width,
+            child: BlocBuilder<RestaurantBloc, RestaurantState>(
+                builder: (context, state) {
+                  if (state is LoadingRestaurant) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is FetchedRestaurant) {
+                    return ListView.builder(
+                      physics: new NeverScrollableScrollPhysics(),
+                        itemCount: state.restaurants.data.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              CreateAreaList(
+                                  state.restaurants.data[index].name,
+                                  state.restaurants.data[index].address,
+                                  state.restaurants.data[index].avgScore,
+                                  'images/element/test.jpeg')
+                            ],
+                          );
+                        });
+                  } else if (state is RestaurantError) {
+                    return ErrorWidget(state.message.toString());
+                  }
+                  return Container();
+                }),
           ),
         ),
       ),
     );
   }
 }
+
+// BlocBuilder<RestaurantBloc,RestaurantState>(builder: (context,state){
+// if(state is LoadingRestaurant){
+// return Center(child: CircularProgressIndicator(),);
+// }else if(state is FetchedRestaurant){
+// return ListView.builder(
+// itemCount: state.restaurants.data.length,
+// itemBuilder: (context,index){
+// return CreateAreaList(
+// state.restaurants.data[index].name, state.restaurants.data[index].address, state.restaurants.data[index].avgScore,'images/element/test.jpeg');
+// }
+// );
+// }else if(state is RestaurantError){
+// return ErrorWidget(state.message.toString());
+// }
+// return Container();
+// }),

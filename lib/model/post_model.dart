@@ -1,5 +1,3 @@
-//posts.json是一個具有列表的巢狀結構，本身還是一個Map(花括號開始就是Map,方括號開始就是list of map)
-
 class PostModel{
   List<Data> data;
   Links links;

@@ -16,9 +16,6 @@ import 'bloc/post_state.dart';
 class ArticleContent extends StatefulWidget {
   final int index;
   ArticleContent({required this.index});
-  // final Data post;
-  //
-  // const ArticleContent(this.post);
 
   @override
   _ArticleContentState createState() => _ArticleContentState();
