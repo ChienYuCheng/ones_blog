@@ -49,13 +49,11 @@ class _BecomeStoreState extends State<BecomeStore> {
   int cityAreaId = 1;
   int categoryId = 1;
 
-  // late String cityArea;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   CitiesRepository().fetchCities();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    CitiesRepository().fetchCities();
+  }
 
   void _becomeStore() async {
     ApiResponse response = await LocationRepository().becomeStore(cityAreaId,categoryId,nameController.text, addressController.text, phoneController.text, introductionController.text,widget.token);
