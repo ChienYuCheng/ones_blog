@@ -30,15 +30,17 @@ class Data {
   String content;
   String publishedAt;
   String slug;
+  String images;
 
   Data(
       {required this.createdAt,
-        required this.user,
-        required this.locationId,
-        required this.title,
-        required this.content,
-        required this.publishedAt,
-        required this.slug});
+      required this.user,
+      required this.locationId,
+      required this.title,
+      required this.content,
+      required this.publishedAt,
+      required this.slug,
+      required this.images});
 
   factory Data.fromJson(Map<String, dynamic> json){
 
@@ -48,10 +50,11 @@ class Data {
       createdAt: json['created_at'],
       user: user,
       locationId: json['location_id'],
-      title: json['title']as String,
-      content: json['content']as String,
-      publishedAt: json['published_at']as String,
-      slug: json['slug']as String
+      title: json['title'] as String,
+      content: json['content'] as String,
+      publishedAt: json['published_at'] as String,
+      slug: json['slug'] as String,
+      images: json['images'] != null ? json['url'] : "null",
     );
   }
 }

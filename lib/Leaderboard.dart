@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ones_blog/bloc/leader_board_bloc.dart';
+import 'package:ones_blog/repository/location_repo.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'StoreInformation.dart';
 import 'function/BuildDots.dart';
 
 class Leaderboard extends StatefulWidget {
-  const Leaderboard({Key? key}) : super(key: key);
+  String token;
+  Leaderboard({required this.token});
+  // const Leaderboard({Key? key}) : super(key: key);
 
   @override
   _LeaderboardState createState() => _LeaderboardState();
@@ -18,7 +23,7 @@ class _LeaderboardState extends State<Leaderboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      endDrawer: CreateMenu(context,widget.token),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
@@ -89,41 +94,163 @@ class _LeaderboardState extends State<Leaderboard> {
                     SizedBox(
                       height: 30,
                     ),
-                    CarouselSlider(
-                      options: CarouselOptions(
-                          height: 260.0,
-                          aspectRatio: 2.0,
-                          enlargeCenterPage: true,
-                          scrollDirection: Axis.horizontal,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              restaurantCurrentPos = index;
-                            });
-                          }),
-                      items: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width / 1.5,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromRGBO(198, 201, 203, 1)),
-                              child: GestureDetector(
-                                child: Center(
-                                  child: Text(
-                                    'text $i',
-                                    style: TextStyle(fontSize: 16.0),
+                    BlocBuilder<LeaderBoardBloc,LeaderBoardState>(
+                      builder: (context,state){
+                        if (state is LoadingLeaderBoard) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }else if(state is FetchedLeaderBoard){
+                          return CarouselSlider.builder(
+                            itemCount: 5,
+                            itemBuilder: (BuildContext context, int itemIndex, int pageIndex){
+                              return Container(
+                                padding: EdgeInsets.all(10.0),
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color.fromRGBO(198, 201, 203, 1)),
+                                child: GestureDetector(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        state.leaderBoards.data[itemIndex].name,
+                                        style: TextStyle(fontSize: 16.0),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: 100,
+                                            child: Text(
+                                              state.leaderBoards.data[itemIndex].address,
+                                              maxLines: 1,
+                                              // overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(fontSize: 16.0),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                color: Color.fromRGBO(241, 208, 10, 1),
+                                              ),
+                                              Text(
+                                                state.leaderBoards.data[itemIndex].avgScore,
+                                                style: TextStyle(fontSize: 16.0),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                BlocProvider(
+                                                  create: (context) =>
+                                                      LeaderBoardBloc(LocationRepository()),
+                                                  child: StoreInformation(
+                                                    index: itemIndex,
+                                                    token: widget.token,
+                                                    categoryId: state.leaderBoards.data[itemIndex].categoryId,
+                                                  ),
+                                                )));
+                                  },
                                 ),
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,)));
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      }).toList(),
+                              );
+                            },
+                            options: CarouselOptions(
+                                height: 260.0,
+                                aspectRatio: 2.0,
+                                enlargeCenterPage: true,
+                                scrollDirection: Axis.horizontal,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    spotsCurrentPos = index;
+                                  });
+                                }),
+                            // items: LocationRepository.restaurantName.map((i) {
+                            //   return Builder(
+                            //     builder: (BuildContext context) {
+                            //       return Container(
+                            //         width: MediaQuery.of(context).size.width / 1.5,
+                            //         decoration: BoxDecoration(
+                            //             borderRadius: BorderRadius.circular(10),
+                            //             color: Color.fromRGBO(198, 201, 203, 1)),
+                            //         child: GestureDetector(
+                            //           child: Text(
+                            //             '$i',
+                            //             style: TextStyle(fontSize: 16.0),
+                            //           ),
+                            //           onTap: () {
+                            //             Navigator.push(
+                            //                 context,
+                            //                 MaterialPageRoute(
+                            //                     builder: (context) =>
+                            //                         BlocProvider(
+                            //                           create: (context) =>
+                            //                               RestaurantBloc(LocationRepository()),
+                            //                           child: StoreInformation(
+                            //                             index: LocationRepository.restaurantName.indexOf(i),
+                            //                           ),
+                            //                         )));
+                            //           },
+                            //         ),
+                            //       );
+                            //     },
+                            //   );
+                            // }).toList(),
+                          );
+                        }else if(state is LeaderBoardError){
+                          return ErrorWidget(state.message.toString());
+                        }
+                        return Container();
+                      },
                     ),
+                    // CarouselSlider(
+                    //   options: CarouselOptions(
+                    //       height: 260.0,
+                    //       aspectRatio: 2.0,
+                    //       enlargeCenterPage: true,
+                    //       scrollDirection: Axis.horizontal,
+                    //       onPageChanged: (index, reason) {
+                    //         setState(() {
+                    //           restaurantCurrentPos = index;
+                    //         });
+                    //       }),
+                    //   items: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) {
+                    //     return Builder(
+                    //       builder: (BuildContext context) {
+                    //         return Container(
+                    //           width: MediaQuery.of(context).size.width / 1.5,
+                    //           decoration: BoxDecoration(
+                    //               borderRadius: BorderRadius.circular(10),
+                    //               color: Color.fromRGBO(198, 201, 203, 1)),
+                    //           child: GestureDetector(
+                    //             child: Center(
+                    //               child: Text(
+                    //                 'text $i',
+                    //                 style: TextStyle(fontSize: 16.0),
+                    //               ),
+                    //             ),
+                    //             onTap: (){
+                    //               Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,categoryId: 0,)));
+                    //             },
+                    //           ),
+                    //         );
+                    //       },
+                    //     );
+                    //   }).toList(),
+                    // ),
                     SizedBox(
                       height: 5,
                     ),
@@ -173,7 +300,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,token: widget.token,categoryId: 0,)));
                                 },
                               ),
                             );
@@ -229,7 +356,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,token: widget.token,categoryId: 0,)));
                                 },
                               ),
                             );

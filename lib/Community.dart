@@ -16,7 +16,9 @@ import 'bloc/post_state.dart';
 import 'function/CreateArticle.dart';
 
 class Community extends StatefulWidget {
-  const Community({Key? key}) : super(key: key);
+  String token;
+  Community({required this.token});
+  // const Community({Key? key}) : super(key: key);
 
   @override
   _CommunityState createState() => _CommunityState();
@@ -39,7 +41,7 @@ class _CommunityState extends State<Community> {
       initialIndex: 0,
       length: 3,
       child: Scaffold(
-        endDrawer: CreateMenu(context),
+        endDrawer: CreateMenu(context,widget.token),
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxScrolled) => [
             SliverAppBar(
@@ -138,7 +140,7 @@ class _CommunityState extends State<Community> {
                               return new Column(
                                 children: [
                                   if (state.posts.data[index].locationId == 1)
-                                    CreateArticle(article.user.name, article.title, 'images/element/test.jpeg',context,index)
+                                    CreateArticle(article.user.name, article.title, 'images/element/test.jpeg',context,index,widget.token)
                                 ],
                               );
                             },
@@ -176,7 +178,7 @@ class _CommunityState extends State<Community> {
                               return new Column(
                                 children: [
                                   if(state.posts.data[index].locationId == 2)
-                                    CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index)
+                                    CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index,widget.token)
                                 ],
                               );
                             },
@@ -210,11 +212,10 @@ class _CommunityState extends State<Community> {
                           return ListView.builder(
                             itemCount: state.posts.data.length,
                             itemBuilder: (context, index){
-                              // print(index.toString());
                               return new Column(
                                 children: [
                                   if(state.posts.data[index].locationId == 3)
-                                    CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index)
+                                    CreateArticle(state.posts.data[index].user.name, state.posts.data[index].title, 'images/element/test.jpeg', context,index,widget.token)
                                 ],
                               );
                             },
@@ -237,7 +238,7 @@ class _CommunityState extends State<Community> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => AddArticle(),
+                builder: (context) => AddArticle(token: widget.token,),
                 maintainState: false,
               ),
             );

@@ -4,7 +4,9 @@ import 'CreateMenu.dart';
 import 'HomePage.dart';
 
 class AboutUs extends StatefulWidget {
-  const AboutUs({Key? key}) : super(key: key);
+  String token;
+  AboutUs({required this.token});
+  // const AboutUs({Key? key}) : super(key: key);
 
   @override
   _AboutUsState createState() => _AboutUsState();
@@ -14,8 +16,7 @@ class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: CreateMenu(context),
-      endDrawer: SignOutMenu(context),
+      endDrawer: CreateMenu(context,widget.token),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(

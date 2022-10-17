@@ -6,7 +6,9 @@ import 'function/BuildButton.dart';
 import 'function/CreateArticle.dart';
 
 class UserInformation extends StatefulWidget {
-  const UserInformation({Key? key}) : super(key: key);
+  String token;
+  UserInformation({required this.token});
+  // const UserInformation({Key? key}) : super(key: key);
 
   @override
   _UserInformationState createState() => _UserInformationState();
@@ -19,7 +21,7 @@ class _UserInformationState extends State<UserInformation> {
       initialIndex: 0,
       length: 4,
       child: Scaffold(
-        endDrawer: CreateMenu(context),
+        endDrawer: CreateMenu(context, widget.token),
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxScrolled) => [
             SliverAppBar(
@@ -118,7 +120,7 @@ class _UserInformationState extends State<UserInformation> {
                         SizedBox(
                           width: 80,
                         ),
-                        buildButtion('編輯個人檔案', 120, 48, context, HomePage()),
+                        buildButtion('編輯個人檔案', 120, 48, context, HomePage(token: '',)),
                       ],
                     ),
                     TabBar(

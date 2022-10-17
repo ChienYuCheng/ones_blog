@@ -11,7 +11,9 @@ import 'HomePage.dart';
 import 'function/BuildButton.dart';
 
 class AddArticle extends StatefulWidget {
-  const AddArticle({Key? key}) : super(key: key);
+  String token;
+  AddArticle({required this.token});
+  // const AddArticle({Key? key}) : super(key: key);
 
   @override
   _AddArticleState createState() => _AddArticleState();
@@ -23,7 +25,7 @@ class _AddArticleState extends State<AddArticle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      endDrawer: CreateMenu(context, widget.token),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
@@ -272,8 +274,8 @@ class _AddArticleState extends State<AddArticle> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildButtion('取消', 80, 52, context, Community()),
-                        buildButtion('發佈', 80, 52, context, ArticleContent(index: 0,)),
+                        buildButtion('取消', 80, 52, context, Community(token: widget.token,)),
+                        buildButtion('發佈', 80, 52, context, ArticleContent(index: 0,token: widget.token,)),
                       ],
                     ),
                   ],

@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ones_blog/Constant.dart';
+import 'package:ones_blog/StoreInformation.dart';
+import 'package:ones_blog/bloc/location_bloc.dart';
+import 'package:ones_blog/bloc/restaurant_bloc.dart';
+import 'package:ones_blog/repository/location_repo.dart';
 
-TextButton CreateAreaList(String title, String address, String avgScore, String route) {
+TextButton CreateAreaList(String title, String address, String avgScore, String route, BuildContext context,Widget storeInformation) {
   return TextButton(
-    onPressed: () {},
+    onPressed: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context){
+                return BlocProvider<LocationBloc>(create: (context)=>LocationBloc(LocationRepository()),child: storeInformation,);
+                // return storeInformation;
+              }
+          ));
+    },
     child: Container(
       margin: EdgeInsets.only(top: 10.0),
       decoration: BoxDecoration(

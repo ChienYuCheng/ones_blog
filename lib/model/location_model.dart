@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class LocationModel{
   List<Data> data;
   Links links;
@@ -31,8 +33,7 @@ class Data {
   String avgScore;
   String introduction;
 
-  Data(
-      {required this.userId,
+  Data({required this.userId,
         required this.cityAreaId,
         required this.categoryId,
         required this.name,
@@ -43,7 +44,6 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json){
 
-
     return Data(
         userId: json['user_id'],
         cityAreaId: json['city_area_id'],
@@ -52,7 +52,7 @@ class Data {
         address: json['address'],
         phone: json['phone'],
         avgScore: json['avgScore'],
-        introduction: json['introduction']
+        introduction: json['introduction'],
     );
   }
 }

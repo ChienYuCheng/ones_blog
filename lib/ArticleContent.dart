@@ -14,8 +14,9 @@ import 'bloc/post_event.dart';
 import 'bloc/post_state.dart';
 
 class ArticleContent extends StatefulWidget {
+  String token;
   final int index;
-  ArticleContent({required this.index});
+  ArticleContent({required this.index,required this.token});
 
   @override
   _ArticleContentState createState() => _ArticleContentState();
@@ -36,7 +37,7 @@ class _ArticleContentState extends State<ArticleContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      endDrawer: CreateMenu(context,widget.token),
       body: BlocBuilder<PostBloc, PostState>(
         builder: (context, state) {
           if(state is LoadingState){
@@ -218,7 +219,7 @@ class _ArticleContentState extends State<ArticleContent> {
                                             builder: (context) =>
                                                 BlocProvider(
                                                   create: (context) => CommentBloc(CommentRepository())..add(FetchCommentEvent()),
-                                                  child: ArticleComments(),
+                                                  child: ArticleComments(token: widget.token,),
                                                 ),
                                             maintainState: false,
                                           ),

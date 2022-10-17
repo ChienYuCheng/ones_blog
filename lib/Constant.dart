@@ -10,19 +10,19 @@ const contextStyle = TextStyle(
 );
 
 // ---- STRINGS ----
-const baseURL = 'http://onesblog.herokuapp.com/api';
-const loginUrl = '/login';
+const baseURL = 'https://onesblog.herokuapp.com/api';
 const registerUrl = '/register';
+const verifyUrl = '/verifyCode';
+const loginUrl = '/login';
 const logoutUrl = '/logout';
-const userUrl = '/user';
+const locationsUrl = '/locations';
+const locationScores = '/location-scores';
 const postsUrl = '/posts';
 const commentsUrl = '/comments';
-const verifyUrl = '/verifyCode';
-const locationsUrl = '/locations';
+// const cities = '/cities';
+
 
 // ---- ERRORS ----
 const serverError = 'Server Error';
 const unauthorized = 'Unauthorized';
 const somethingWentWrong = 'Something went wrong, try again!';
-
-Map<String, String> headers = {"Accept" : "application/json"};

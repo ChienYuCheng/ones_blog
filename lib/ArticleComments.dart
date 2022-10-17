@@ -10,7 +10,9 @@ import 'bloc/post_state.dart';
 import 'function/CreateArticle.dart';
 
 class ArticleComments extends StatefulWidget {
-  const ArticleComments({Key? key}) : super(key: key);
+  String token;
+  ArticleComments({required this.token});
+  // const ArticleComments({Key? key}) : super(key: key);
 
   @override
   _ArticleCommentsState createState() => _ArticleCommentsState();
@@ -25,7 +27,7 @@ class _ArticleCommentsState extends State<ArticleComments> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      endDrawer: CreateMenu(context),
+      endDrawer: CreateMenu(context, widget.token),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(

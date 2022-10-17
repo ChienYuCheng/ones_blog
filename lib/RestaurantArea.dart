@@ -2,39 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/Leaderboard.dart';
+import 'package:ones_blog/LocationInformation.dart';
 import 'package:ones_blog/LoginAccount.dart';
 import 'package:ones_blog/SignOutMenu.dart';
+import 'package:ones_blog/StoreInformation.dart';
 import 'AboutUs.dart';
 import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
+import 'bloc/all_restaurant_bloc.dart';
+import 'bloc/location_bloc.dart';
 import 'bloc/post_bloc.dart';
 import 'bloc/restaurant_bloc.dart';
 import 'function/BuildMenuButton.dart';
 import 'function/CreateAreaList.dart';
 
 class RestaurantArea extends StatefulWidget {
-  const RestaurantArea({Key? key}) : super(key: key);
+  String token;
+  RestaurantArea({required this.token});
+  // const RestaurantArea({Key? key}) : super(key: key);
 
   @override
   _RestaurantAreaState createState() => _RestaurantAreaState();
 }
 
 class _RestaurantAreaState extends State<RestaurantArea> {
-  late RestaurantBloc restaurantBloc;
+  late LocationBloc locationBloc;
 
   @override
   void initState() {
     super.initState();
-    restaurantBloc = BlocProvider.of<RestaurantBloc>(context);
-    restaurantBloc.add(FetchRestaurantEvent());
+    locationBloc = BlocProvider.of<LocationBloc>(context);
+    locationBloc.add(FetchLocationEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: CreateMenu(context),
-      endDrawer: SignOutMenu(context),
+      endDrawer: CreateMenu(context, widget.token),
+      // endDrawer: SignOutMenu(context),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
@@ -72,13 +78,13 @@ class _RestaurantAreaState extends State<RestaurantArea> {
                     image: AssetImage('images/text/restaurant.png'),
                     height: 55,
                   ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Image(
-                    image: AssetImage('images/text/newTaipeiCity.png'),
-                    height: 55,
-                  ),
+                  // SizedBox(
+                  //   width: 20,
+                  // ),
+                  // Image(
+                  //   image: AssetImage('images/text/newTaipeiCity.png'),
+                  //   height: 55,
+                  // ),
                 ],
               ),
             ),
@@ -89,52 +95,48 @@ class _RestaurantAreaState extends State<RestaurantArea> {
             color: Color.fromRGBO(222, 215, 209, 1),
             height: MediaQuery.of(context).size.height + 1700,
             width: MediaQuery.of(context).size.width,
-            child: BlocBuilder<RestaurantBloc, RestaurantState>(
+            child: BlocBuilder<LocationBloc, LocationState>(
                 builder: (context, state) {
-                  if (state is LoadingRestaurant) {
-                    return Center(
+              if (state is LoadingLocation) {
+                return Column(
+                  children: [
+                    SizedBox(height: 20,),
+                    SizedBox(
+                      width: 50,
+                      height: 50,
                       child: CircularProgressIndicator(),
-                    );
-                  } else if (state is FetchedRestaurant) {
-                    return ListView.builder(
-                      physics: new NeverScrollableScrollPhysics(),
-                        itemCount: state.restaurants.data.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              CreateAreaList(
-                                  state.restaurants.data[index].name,
-                                  state.restaurants.data[index].address,
-                                  state.restaurants.data[index].avgScore,
-                                  'images/element/test.jpeg')
-                            ],
-                          );
-                        });
-                  } else if (state is RestaurantError) {
-                    return ErrorWidget(state.message.toString());
-                  }
-                  return Container();
-                }),
+                    )
+                  ],
+                );
+              } else if (state is FetchedLocation) {
+                return ListView.builder(
+                    physics: new NeverScrollableScrollPhysics(),
+                    itemCount: state.locations.data.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          if (state.locations.data[index].categoryId == 1)
+                            CreateAreaList(
+                                state.locations.data[index].name,
+                                state.locations.data[index].address,
+                                state.locations.data[index].avgScore,
+                                'images/element/test.jpeg',
+                                context,
+                                LocationInformation(
+                                  index: index,
+                                  token: widget.token,
+                                )),
+                        ],
+                      );
+                    });
+              } else if (state is LocationError) {
+                return ErrorWidget(state.message.toString());
+              }
+              return Container();
+            }),
           ),
         ),
       ),
     );
   }
 }
-
-// BlocBuilder<RestaurantBloc,RestaurantState>(builder: (context,state){
-// if(state is LoadingRestaurant){
-// return Center(child: CircularProgressIndicator(),);
-// }else if(state is FetchedRestaurant){
-// return ListView.builder(
-// itemCount: state.restaurants.data.length,
-// itemBuilder: (context,index){
-// return CreateAreaList(
-// state.restaurants.data[index].name, state.restaurants.data[index].address, state.restaurants.data[index].avgScore,'images/element/test.jpeg');
-// }
-// );
-// }else if(state is RestaurantError){
-// return ErrorWidget(state.message.toString());
-// }
-// return Container();
-// }),

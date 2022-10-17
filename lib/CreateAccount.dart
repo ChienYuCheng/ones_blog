@@ -23,6 +23,8 @@ import 'function/BuildButton.dart';
 import 'model/api_response.dart';
 
 class CreateAccount extends StatefulWidget {
+  // String token;
+  // CreateAccount({required this.token});
   const CreateAccount({Key? key}) : super(key: key);
 
   @override
@@ -56,28 +58,46 @@ class _CreateAccountState extends State<CreateAccount> {
     }
   }
 
-  Future<void> _reSend(BuildContext context) async {
-    ApiResponse response = await register(nameController.text, emailController.text, passwordController.text);
-
-    if(response.error == null){
-      _saveAndRedirectToVerify(response.data as UserModel);
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.error.toString())));
-    }
-  }
+  // Future<void> _reSend(BuildContext context) async {
+  //   ApiResponse response = await register(nameController.text, emailController.text, passwordController.text);
+  //
+  //   if(response.error == null){
+  //     _saveAndRedirectToVerify(response.data as UserModel);
+  //   }else{
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.error.toString())));
+  //   }
+  // }
 
   void  _saveAndRedirectToVerify(UserModel user) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setString('token', user.token??'');
     await pref.setString('email', user.email??'');
+    print(pref.getString('email'));
     Navigator.push(context, MaterialPageRoute(builder: (context)=>stateVerify(context)));
   }
   Future<void>  _saveAndRedirectToHome(UserModel user,BuildContext context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString('token', user.token??'');
-    await pref.setString('email', user.email??'');
-    if(screenState == 1){
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+    print('TOKEN : ${pref.getString('token')}');
+    if (screenState == 1) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context)=>LoginAccount()),
+          // MaterialPageRoute(
+          //     builder: (context) => MultiBlocProvider(providers: [
+          //           BlocProvider<RestaurantBloc>(
+          //             create: (BuildContext context) =>
+          //                 RestaurantBloc(LocationRepository()),
+          //           ),
+          //           BlocProvider<SpotBloc>(
+          //             create: (BuildContext context) =>
+          //                 SpotBloc(LocationRepository()),
+          //           ),
+          //           BlocProvider<LodgingBloc>(
+          //             create: (BuildContext context) =>
+          //                 LodgingBloc(LocationRepository()),
+          //           ),
+          //         ], child: HomePage(token: pref.getString('token').toString(),))),
+          (route) => false);
     }
   }
 
@@ -203,7 +223,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                   print('verify form key : $verifyFormKey');
                                   _verifyCode(context);
                                   if(screenState == 1){
-                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage(token: '',)), (route) => false);
                                   }
                                 }
                               }),
@@ -230,7 +250,7 @@ class _CreateAccountState extends State<CreateAccount> {
   }
   Widget stateRegister(BuildContext context){
     return Scaffold(
-      endDrawer: CreateMenu(context),
+      endDrawer: CreateMenu(context,''),
       body: Form(
         key: formKey,
         child: NestedScrollView(
@@ -253,7 +273,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         create: (BuildContext context) => LodgingBloc(LocationRepository()),
                       ),
                     ],
-                    child: HomePage(),
+                    child: HomePage(token: '',),
                   ),), (route) => false);
                 },
                 icon: Image.asset('images/icon/icon.png'),
@@ -485,7 +505,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          buildButtionPop('取消', 80, 52, context, HomePage()),
+                          buildButtionPop('取消', 80, 52, context, HomePage(token: '',)),
                           kbuildButtionPush('註冊', 80, 52, context,(){
                             if(formKey.currentState!.validate()){
                               print('form key : $formKey');

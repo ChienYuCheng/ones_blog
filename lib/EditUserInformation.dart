@@ -6,7 +6,9 @@ import 'SearchLocations.dart';
 import 'function/CreateComment.dart';
 
 class EditUserInformation extends StatefulWidget {
-  const EditUserInformation({Key? key}) : super(key: key);
+  String token;
+  EditUserInformation({required this.token});
+  // const EditUserInformation({Key? key}) : super(key: key);
 
   @override
   State<EditUserInformation> createState() => _EditUserInformationState();
@@ -17,7 +19,7 @@ class _EditUserInformationState extends State<EditUserInformation> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      endDrawer: CreateMenu(context),
+      endDrawer: CreateMenu(context, widget.token),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(

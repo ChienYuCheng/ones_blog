@@ -40,19 +40,38 @@ class _LoginAccountState extends State<LoginAccount> {
 
   void _loginUser() async {
     ApiResponse response = await login(emailController.text, passwordController.text);
-
     if(response.error == null){
       _saveAndRedirectToHome(response.data as UserModel);
     }else{
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.error.toString())));
     }
   }
-  void  _saveAndRedirectToHome(UserModel user) async {
+
+  void _saveAndRedirectToHome(UserModel user) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setString('token', user.token??'');
-    await pref.setString('email', user.email??'');
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+    await pref.setString('token', user.token ?? '');
+    await pref.setString('email', user.email ?? '');
+    print(pref.getString('token'));
+    print(pref.getString('email'));
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(providers: [
+                  BlocProvider<RestaurantBloc>(
+                    create: (BuildContext context) =>
+                        RestaurantBloc(LocationRepository()),
+                  ),
+                  BlocProvider<SpotBloc>(
+                    create: (BuildContext context) =>
+                        SpotBloc(LocationRepository()),
+                  ),
+                  BlocProvider<LodgingBloc>(
+                    create: (BuildContext context) =>
+                        LodgingBloc(LocationRepository()),
+                  ),
+                ], child: HomePage(token: pref.getString('token').toString(),))), (route) => false);
   }
+
   String? get _errorText{
     final text = passwordController.text;
     if(text.isEmpty){
@@ -66,8 +85,7 @@ class _LoginAccountState extends State<LoginAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: CreateMenu(context),
-      endDrawer: CreateMenu(context),
+      endDrawer: CreateMenu(context,''),
       body: Form(
         key: formKey,
         child: NestedScrollView(
@@ -90,7 +108,7 @@ class _LoginAccountState extends State<LoginAccount> {
                         create: (BuildContext context) => LodgingBloc(LocationRepository()),
                       ),
                     ],
-                    child: HomePage(),
+                    child: HomePage(token: '',),
                   ),), (route) => false);                    // Navigator.pushReplacement(
                   },
                   icon: Image.asset('images/icon/icon.png'),
@@ -264,7 +282,7 @@ class _LoginAccountState extends State<LoginAccount> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          buildButtionPushAndRem('取消', 80, 52, context, HomePage()),
+                          buildButtionPushAndRem('取消', 80, 52, context, HomePage(token: '',)),
                           kbuildButtionPushAndRem('登入', 80, 52, context, (){
                             if(formKey.currentState!.validate()){
                               _loginUser();

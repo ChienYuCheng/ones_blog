@@ -10,7 +10,7 @@ import 'package:ones_blog/model/post_model.dart';
 class CommentRepository {
   Future<CommentModel> fetchComment() async {
     try{
-      Uri uri = Uri.http('onesblog.herokuapp.com', '/api/posts/${post}/comments',
+      Uri uri = Uri.http('onesblog.herokuapp.com', '/api/posts/$post/comments',
           {'limit': '10', 'page': '1'});
       print(uri);
       http.Response response =

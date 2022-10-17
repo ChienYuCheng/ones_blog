@@ -16,25 +16,25 @@ Future<ApiResponse> login(String email, String password) async {
 
   try{
     final response = await http.post(
-      Uri.parse(baseURL + loginUrl),
-      headers: {'Accept' : 'application/json'},
-      body: {
-        'email':email,
-        'password':password,
-        'device_name': deviceName
-      }
+        Uri.parse(baseURL + loginUrl),
+        headers: {'Accept' : 'application/json'},
+        body: {
+          'email':email,
+          'password':password,
+          'device_name': deviceName
+        }
     );
     print(baseURL+loginUrl);
     switch(response.statusCode){
       case 200:
-        print("登入成功");
         apiResponse.data = UserModel.fromJson(jsonDecode(response.body));
+        print("登入成功");
         break;
       case 422:
-        print("422(login)");
         final errors = jsonDecode(response.body)['data'];
         print(jsonDecode(response.body)['data']);
         apiResponse.error = errors[errors.keys.elementAt(0)][0];
+        print("422(login)");
         break;
       default:
         print("錯誤1");
@@ -67,17 +67,17 @@ Future<ApiResponse> register(String name, String email, String password) async {
     );
     switch(response.statusCode){
       case 201:
-        print('註冊');
         apiResponse.data = UserModel.fromJson(jsonDecode(response.body));
+        print('註冊');
         break;
       case 422:
-        print('422(register)');
         final errors = jsonDecode(response.body)['data'];
-        apiResponse.error = errors[errors.keys.elementAt(0)][0];
+        apiResponse.error = errors[errors.keys.elementAt(0)];
+        print('422(register)');
         break;
       default:
-        print('Something went wrong!');
         apiResponse.error = somethingWentWrong;
+        print('Something went wrong!');
         break;
     }
   }catch(e){
@@ -103,17 +103,17 @@ Future<ApiResponse> verifyCode(String name, String email, String code) async {
     );
     switch(response.statusCode){
       case 200:
-        print('200 : 驗證');
         apiResponse.data = UserModel.fromJson(jsonDecode(response.body));
+        print('200 : 驗證');
         break;
       case 422:
-        print('422(verifyCode)');
         final errors = jsonDecode(response.body)['data'];
-        apiResponse.error = errors[errors.keys.elementAt(0)][0];
+        apiResponse.error = errors[errors.keys.elementAt(0)];
+        print('422(verifyCode)');
         break;
       default:
-        print('Something went wrong(verifyCode)!');
         apiResponse.error = somethingWentWrong;
+        print('Something went wrong(verifyCode)!');
         break;
     }
   }catch(e){

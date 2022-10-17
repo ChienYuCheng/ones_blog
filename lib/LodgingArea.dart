@@ -4,16 +4,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/AboutUs.dart';
 import 'package:ones_blog/LoginAccount.dart';
 import 'package:ones_blog/SignOutMenu.dart';
+import 'package:ones_blog/StoreInformation.dart';
 import 'Community.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'Leaderboard.dart';
+import 'LocationInformation.dart';
+import 'bloc/all_lodging_bloc.dart';
+import 'bloc/location_bloc.dart';
 import 'bloc/lodging_bloc.dart';
 import 'function/BuildMenuButton.dart';
 import 'function/CreateAreaList.dart';
 
 class LodgingArea extends StatefulWidget {
-  const LodgingArea({Key? key}) : super(key: key);
+  String token;
+  LodgingArea({required this.token});
+  // const LodgingArea({Key? key}) : super(key: key);
 
   @override
   _LodgingAreaState createState() => _LodgingAreaState();
@@ -21,20 +27,19 @@ class LodgingArea extends StatefulWidget {
 
 class _LodgingAreaState extends State<LodgingArea> {
 
-  late LodgingBloc lodgingBloc;
+  late LocationBloc locationBloc;
 
   @override
   void initState() {
     super.initState();
-    lodgingBloc = BlocProvider.of<LodgingBloc>(context);
-    lodgingBloc.add(FetchLodgingEvent());
+    locationBloc = BlocProvider.of<LocationBloc>(context);
+    locationBloc.add(FetchLocationEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // endDrawer: CreateMenu(context),
-      endDrawer: SignOutMenu(context),
+      endDrawer: CreateMenu(context, widget.token),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
@@ -72,13 +77,13 @@ class _LodgingAreaState extends State<LodgingArea> {
                     image: AssetImage('images/text/lodging.png'),
                     height: 55,
                   ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Image(
-                    image: AssetImage('images/text/newTaipeiCity.png'),
-                    height: 55,
-                  ),
+                  // SizedBox(
+                  //   width: 20,
+                  // ),
+                  // Image(
+                  //   image: AssetImage('images/text/newTaipeiCity.png'),
+                  //   height: 55,
+                  // ),
                 ],
               ),
             ),
@@ -89,28 +94,41 @@ class _LodgingAreaState extends State<LodgingArea> {
             color: Color.fromRGBO(222, 215, 209, 1),
             height: MediaQuery.of(context).size.height + 1700,
             width: MediaQuery.of(context).size.width,
-            child: BlocBuilder<LodgingBloc, LodgingState>(
+            child: BlocBuilder<LocationBloc, LocationState>(
                 builder: (context, state) {
-                  if (state is LoadingLodging) {
-                    return Center(
-                      child: CircularProgressIndicator(),
+                  if (state is LoadingLocation) {
+                    return Column(
+                      children: [
+                        SizedBox(height: 20,),
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(),
+                        )
+                      ],
                     );
-                  } else if (state is FetchedLodging){
+                  } else if (state is FetchedLocation) {
                     return ListView.builder(
                         physics: new NeverScrollableScrollPhysics(),
-                        itemCount: state.lodgings.data.length,
+                        itemCount: state.locations.data.length,
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
-                              CreateAreaList(
-                                  state.lodgings.data[index].name,
-                                  state.lodgings.data[index].address,
-                                  state.lodgings.data[index].avgScore,
-                                  'images/element/test.jpeg')
+                              if (state.locations.data[index].categoryId == 3)
+                                CreateAreaList(
+                                    state.locations.data[index].name,
+                                    state.locations.data[index].address,
+                                    state.locations.data[index].avgScore,
+                                    'images/element/test.jpeg',
+                                    context,
+                                    LocationInformation(
+                                      index: index,
+                                      token: widget.token,
+                                    )),
                             ],
                           );
                         });
-                  } else if (state is LodgingError) {
+                  } else if (state is LocationError) {
                     return ErrorWidget(state.message.toString());
                   }
                   return Container();

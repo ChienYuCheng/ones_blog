@@ -7,6 +7,7 @@ import 'package:ones_blog/BecomeStore.dart';
 import 'package:ones_blog/Community.dart';
 import 'package:ones_blog/CreateAccount.dart';
 import 'package:ones_blog/EditUserInformation.dart';
+import 'package:ones_blog/Leaderboard.dart';
 import 'package:ones_blog/LodgingArea.dart';
 import 'package:ones_blog/LoginAccount.dart';
 import 'package:ones_blog/RestaurantArea.dart';
@@ -37,25 +38,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<RestaurantBloc>(
-            create: (BuildContext context) => RestaurantBloc(LocationRepository()),
-          ),
-          BlocProvider<SpotBloc>(
-            create: (BuildContext context) => SpotBloc(LocationRepository()),
-          ),
-          BlocProvider<LodgingBloc>(
-            create: (BuildContext context) => LodgingBloc(LocationRepository()),
-          ),
-        ],
-        child: HomePage(),
-      ),
+      // home: MultiBlocProvider(
+      //   providers: [
+      //     BlocProvider<RestaurantBloc>(
+      //       create: (BuildContext context) => RestaurantBloc(LocationRepository()),
+      //     ),
+      //     BlocProvider<SpotBloc>(
+      //       create: (BuildContext context) => SpotBloc(LocationRepository()),
+      //     ),
+      //     BlocProvider<LodgingBloc>(
+      //       create: (BuildContext context) => LodgingBloc(LocationRepository()),
+      //     ),
+      //   ],
+      //   child: HomePage(),
+      // ),
+
       // home: BlocProvider<PostBloc>(
       //   create: (context) => PostBloc(PostRepository()),
       //   child: Community(),
       // ),
-      // home: Community(),
+
+      home: LoginAccount()
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:ones_blog/bloc/post_bloc.dart';
 import 'package:ones_blog/model/post_model.dart';
 import 'package:ones_blog/repository/post_repo.dart';
 
-TextButton CreateArticle(String type, String title, String route, BuildContext context,int index) {
+TextButton CreateArticle(String type, String title, String route, BuildContext context,int index,String token) {
   return TextButton(
     onPressed: () {
       Navigator.push(
@@ -15,7 +15,7 @@ TextButton CreateArticle(String type, String title, String route, BuildContext c
           builder: ((context) {
             return BlocProvider<PostBloc>(
               create: (context) => PostBloc(PostRepository()),
-              child: ArticleContent(index: index,),
+              child: ArticleContent(index: index,token: token,),
             );
           }),
           maintainState: false,
