@@ -25,6 +25,7 @@ import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   String token;
+
   HomePage({required this.token});
 
   @override
@@ -32,7 +33,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   late RestaurantBloc restaurantBloc;
   late SpotBloc spotBloc;
   late LodgingBloc lodgingBloc;
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      endDrawer: CreateMenu(context,widget.token),
+      endDrawer: CreateMenu(context, widget.token),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(
@@ -129,22 +129,26 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Row(
                       children: [
-                        buildButtionPush(
-                            '餐廳', 80, 48, context,
+                        buildButtionPush('餐廳', 80, 48, context,
                             BlocProvider<LocationBloc>(
-                              create: (context) => LocationBloc(LocationRepository()),
-                              child: RestaurantArea(token: widget.token,),
+                              create: (context) =>
+                                  LocationBloc(LocationRepository()),
+                              child: RestaurantArea(
+                                token: widget.token,
+                              ),
                             )),
-                        buildButtionPush(
-                            '景點', 80, 48, context,
+                        buildButtionPush('景點', 80, 48, context,
                             BlocProvider<LocationBloc>(
-                              create: (context) => LocationBloc(LocationRepository()),
-                              child: SpotsArea(token: widget.token,),
+                              create: (context) =>
+                                  LocationBloc(LocationRepository()),
+                              child: SpotsArea(
+                                token: widget.token,
+                              ),
                             )),
-                        buildButtionPush(
-                            '旅宿', 80, 48, context,
+                        buildButtionPush('旅宿', 80, 48, context,
                             BlocProvider<LocationBloc>(
-                              create: (context) => LocationBloc(LocationRepository()),
+                              create: (context) =>
+                                  LocationBloc(LocationRepository()),
                               child: LodgingArea(token: widget.token),
                             )),
                       ],
@@ -167,16 +171,16 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 30,
                     ),
-                    BlocBuilder<RestaurantBloc,RestaurantState>(
-                      builder: (context,state){
+                    BlocBuilder<RestaurantBloc, RestaurantState>(
+                      builder: (context, state) {
                         if (state is LoadingRestaurant) {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        }else if(state is FetchedRestaurant){
+                        } else if (state is FetchedRestaurant) {
                           return CarouselSlider.builder(
                             itemCount: 5,
-                            itemBuilder: (BuildContext context, int itemIndex, int pageIndex){
+                            itemBuilder: (BuildContext context, int itemIndex, int pageIndex) {
                               return Container(
                                 padding: EdgeInsets.all(10.0),
                                 width: MediaQuery.of(context).size.width / 1.5,
@@ -185,7 +189,8 @@ class _HomePageState extends State<HomePage> {
                                     color: Color.fromRGBO(198, 201, 203, 1)),
                                 child: GestureDetector(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
@@ -196,7 +201,8 @@ class _HomePageState extends State<HomePage> {
                                         height: 20.0,
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
                                             width: 100,
@@ -211,11 +217,13 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Icon(
                                                 Icons.star,
-                                                color: Color.fromRGBO(241, 208, 10, 1),
+                                                color: Color.fromRGBO(
+                                                    241, 208, 10, 1),
                                               ),
                                               Text(
                                                 state.restaurants.data[itemIndex].avgScore,
-                                                style: TextStyle(fontSize: 16.0),
+                                                style:
+                                                TextStyle(fontSize: 16.0),
                                               ),
                                             ],
                                           ),
@@ -227,16 +235,16 @@ class _HomePageState extends State<HomePage> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                BlocProvider(
-                                                  create: (context) =>
-                                                      RestaurantBloc(LocationRepository()),
-                                                  child: StoreInformation(
-                                                    index: itemIndex,
-                                                    token: widget.token,
-                                                    categoryId: state.restaurants.data[itemIndex].categoryId,
-                                                  ),
-                                                )));
+                                            builder: (context) => BlocProvider(
+                                              create: (context) =>
+                                                  SpotBloc(LocationRepository()),
+                                              child: StoreInformation(
+                                                userId: state.restaurants.data[itemIndex].userId,
+                                                index: itemIndex,
+                                                categoryId: state.restaurants.data[itemIndex].categoryId,
+                                                token: widget.token,
+                                              ),
+                                            )));
                                   },
                                 ),
                               );
@@ -251,39 +259,8 @@ class _HomePageState extends State<HomePage> {
                                     spotsCurrentPos = index;
                                   });
                                 }),
-                            // items: LocationRepository.restaurantName.map((i) {
-                            //   return Builder(
-                            //     builder: (BuildContext context) {
-                            //       return Container(
-                            //         width: MediaQuery.of(context).size.width / 1.5,
-                            //         decoration: BoxDecoration(
-                            //             borderRadius: BorderRadius.circular(10),
-                            //             color: Color.fromRGBO(198, 201, 203, 1)),
-                            //         child: GestureDetector(
-                            //           child: Text(
-                            //             '$i',
-                            //             style: TextStyle(fontSize: 16.0),
-                            //           ),
-                            //           onTap: () {
-                            //             Navigator.push(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                     builder: (context) =>
-                            //                         BlocProvider(
-                            //                           create: (context) =>
-                            //                               RestaurantBloc(LocationRepository()),
-                            //                           child: StoreInformation(
-                            //                             index: LocationRepository.restaurantName.indexOf(i),
-                            //                           ),
-                            //                         )));
-                            //           },
-                            //         ),
-                            //       );
-                            //     },
-                            //   );
-                            // }).toList(),
                           );
-                        }else if(state is RestaurantError){
+                        } else if (state is RestaurantError) {
                           return ErrorWidget(state.message.toString());
                         }
                         return Container();
@@ -292,7 +269,7 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 5,
                     ),
-                    buildDots(restaurantCurrentPos, [1,2,3,4,5]),
+                    buildDots(restaurantCurrentPos, [1, 2, 3, 4, 5]),
                     buildButtionPush(
                         "看更多",
                         MediaQuery.of(context).size.width / 2,
@@ -320,16 +297,16 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 30,
                     ),
-                    BlocBuilder<SpotBloc,SpotState>(
-                      builder: (context,state){
+                    BlocBuilder<SpotBloc, SpotState>(
+                      builder: (context, state) {
                         if (state is LoadingSpot) {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        }else if(state is FetchedSpot){
+                        } else if (state is FetchedSpot) {
                           return CarouselSlider.builder(
-                            itemCount: 2,
-                            itemBuilder: (BuildContext context, int itemIndex, int pageIndex){
+                            itemCount: state.spots.data.length,
+                            itemBuilder: (BuildContext context, int itemIndex, int pageIndex) {
                               return Container(
                                 padding: EdgeInsets.all(10.0),
                                 width: MediaQuery.of(context).size.width / 1.5,
@@ -338,7 +315,8 @@ class _HomePageState extends State<HomePage> {
                                     color: Color.fromRGBO(198, 201, 203, 1)),
                                 child: GestureDetector(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
@@ -349,7 +327,8 @@ class _HomePageState extends State<HomePage> {
                                         height: 20.0,
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
                                             width: 100,
@@ -364,11 +343,13 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Icon(
                                                 Icons.star,
-                                                color: Color.fromRGBO(241, 208, 10, 1),
+                                                color: Color.fromRGBO(
+                                                    241, 208, 10, 1),
                                               ),
                                               Text(
                                                 state.spots.data[itemIndex].avgScore,
-                                                style: TextStyle(fontSize: 16.0),
+                                                style:
+                                                    TextStyle(fontSize: 16.0),
                                               ),
                                             ],
                                           ),
@@ -380,14 +361,14 @@ class _HomePageState extends State<HomePage> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                BlocProvider(
+                                            builder: (context) => BlocProvider(
                                                   create: (context) =>
-                                                      RestaurantBloc(LocationRepository()),
+                                                      SpotBloc(LocationRepository()),
                                                   child: StoreInformation(
+                                                    userId: state.spots.data[itemIndex].userId,
                                                     index: itemIndex,
-                                                    token: widget.token,
                                                     categoryId: state.spots.data[itemIndex].categoryId,
+                                                    token: widget.token,
                                                   ),
                                                 )));
                                   },
@@ -404,39 +385,8 @@ class _HomePageState extends State<HomePage> {
                                     spotsCurrentPos = index;
                                   });
                                 }),
-                            // items: LocationRepository.restaurantName.map((i) {
-                            //   return Builder(
-                            //     builder: (BuildContext context) {
-                            //       return Container(
-                            //         width: MediaQuery.of(context).size.width / 1.5,
-                            //         decoration: BoxDecoration(
-                            //             borderRadius: BorderRadius.circular(10),
-                            //             color: Color.fromRGBO(198, 201, 203, 1)),
-                            //         child: GestureDetector(
-                            //           child: Text(
-                            //             '$i',
-                            //             style: TextStyle(fontSize: 16.0),
-                            //           ),
-                            //           onTap: () {
-                            //             Navigator.push(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                     builder: (context) =>
-                            //                         BlocProvider(
-                            //                           create: (context) =>
-                            //                               RestaurantBloc(LocationRepository()),
-                            //                           child: StoreInformation(
-                            //                             index: LocationRepository.restaurantName.indexOf(i),
-                            //                           ),
-                            //                         )));
-                            //           },
-                            //         ),
-                            //       );
-                            //     },
-                            //   );
-                            // }).toList(),
                           );
-                        }else if(state is SpotError){
+                        } else if (state is SpotError) {
                           return ErrorWidget(state.message.toString());
                         }
                         return Container();
@@ -445,13 +395,17 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 5,
                     ),
-                    buildDots(spotsCurrentPos, [1,2,3,4,5]),
+                    buildDots(spotsCurrentPos, [1, 2, 3, 4, 5]),
                     buildButtionPush(
-                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, BlocProvider<LocationBloc>(
-                      create: (context) =>
-                          LocationBloc(LocationRepository()),
-                      child: SpotsArea(token: widget.token),
-                    )),
+                        "看更多",
+                        MediaQuery.of(context).size.width / 2,
+                        48,
+                        context,
+                        BlocProvider<LocationBloc>(
+                          create: (context) =>
+                              LocationBloc(LocationRepository()),
+                          child: SpotsArea(token: widget.token),
+                        )),
                     SizedBox(
                       height: 30,
                     ),
@@ -469,16 +423,17 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 30,
                     ),
-                    BlocBuilder<LodgingBloc,LodgingState>(
-                      builder: (context,state){
+                    BlocBuilder<LodgingBloc, LodgingState>(
+                      builder: (context, state) {
                         if (state is LoadingLodging) {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        }else if(state is FetchedLodging){
+                        } else if (state is FetchedLodging) {
                           return CarouselSlider.builder(
-                            itemCount: 2,
-                            itemBuilder: (BuildContext context, int itemIndex, int pageIndex){
+                            itemCount: state.lodgings.data.length,
+                            itemBuilder: (BuildContext context, int itemIndex,
+                                int pageIndex) {
                               return Container(
                                 padding: EdgeInsets.all(10.0),
                                 width: MediaQuery.of(context).size.width / 1.5,
@@ -487,7 +442,8 @@ class _HomePageState extends State<HomePage> {
                                     color: Color.fromRGBO(198, 201, 203, 1)),
                                 child: GestureDetector(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
@@ -498,12 +454,14 @@ class _HomePageState extends State<HomePage> {
                                         height: 20.0,
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
                                             width: 100,
                                             child: Text(
-                                              state.lodgings.data[itemIndex].address,
+                                              state.lodgings.data[itemIndex]
+                                                  .address,
                                               maxLines: 1,
                                               // overflow: TextOverflow.ellipsis,
                                               style: TextStyle(fontSize: 16.0),
@@ -513,11 +471,14 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Icon(
                                                 Icons.star,
-                                                color: Color.fromRGBO(241, 208, 10, 1),
+                                                color: Color.fromRGBO(
+                                                    241, 208, 10, 1),
                                               ),
                                               Text(
-                                                state.lodgings.data[itemIndex].avgScore,
-                                                style: TextStyle(fontSize: 16.0),
+                                                state.lodgings.data[itemIndex]
+                                                    .avgScore,
+                                                style:
+                                                    TextStyle(fontSize: 16.0),
                                               ),
                                             ],
                                           ),
@@ -529,14 +490,15 @@ class _HomePageState extends State<HomePage> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                BlocProvider(
+                                            builder: (context) => BlocProvider(
                                                   create: (context) =>
-                                                      RestaurantBloc(LocationRepository()),
+                                                      LodgingBloc(
+                                                          LocationRepository()),
                                                   child: StoreInformation(
+                                                    userId: state.lodgings.data[itemIndex].userId,
                                                     index: itemIndex,
-                                                    token: widget.token,
                                                     categoryId: state.lodgings.data[itemIndex].categoryId,
+                                                    token: widget.token,
                                                   ),
                                                 )));
                                   },
@@ -553,39 +515,8 @@ class _HomePageState extends State<HomePage> {
                                     spotsCurrentPos = index;
                                   });
                                 }),
-                            // items: LocationRepository.restaurantName.map((i) {
-                            //   return Builder(
-                            //     builder: (BuildContext context) {
-                            //       return Container(
-                            //         width: MediaQuery.of(context).size.width / 1.5,
-                            //         decoration: BoxDecoration(
-                            //             borderRadius: BorderRadius.circular(10),
-                            //             color: Color.fromRGBO(198, 201, 203, 1)),
-                            //         child: GestureDetector(
-                            //           child: Text(
-                            //             '$i',
-                            //             style: TextStyle(fontSize: 16.0),
-                            //           ),
-                            //           onTap: () {
-                            //             Navigator.push(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                     builder: (context) =>
-                            //                         BlocProvider(
-                            //                           create: (context) =>
-                            //                               RestaurantBloc(LocationRepository()),
-                            //                           child: StoreInformation(
-                            //                             index: LocationRepository.restaurantName.indexOf(i),
-                            //                           ),
-                            //                         )));
-                            //           },
-                            //         ),
-                            //       );
-                            //     },
-                            //   );
-                            // }).toList(),
                           );
-                        }else if(state is LodgingError){
+                        } else if (state is LodgingError) {
                           return ErrorWidget(state.message.toString());
                         }
                         return Container();
@@ -596,11 +527,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                     buildDots(lodgingCurrentPos, [1, 2, 3, 4, 5]),
                     buildButtionPush(
-                        "看更多", MediaQuery.of(context).size.width / 2, 48, context, BlocProvider<LocationBloc>(
-                      create: (context) =>
-                          LocationBloc(LocationRepository()),
-                      child: LodgingArea(token: widget.token),
-                    )),
+                        "看更多",
+                        MediaQuery.of(context).size.width / 2,
+                        48,
+                        context,
+                        BlocProvider<LocationBloc>(
+                          create: (context) =>
+                              LocationBloc(LocationRepository()),
+                          child: LodgingArea(token: widget.token),
+                        )),
                   ],
                 ),
               ),
@@ -611,7 +546,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-List<Widget> indicators(imagesLength,currentIndex) {
+
+List<Widget> indicators(imagesLength, currentIndex) {
   return List<Widget>.generate(imagesLength, (index) {
     return Container(
       margin: EdgeInsets.all(3),

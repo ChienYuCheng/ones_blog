@@ -32,16 +32,31 @@ class LocationRepository {
   static List<String> lodgingIntroduction = [];
 
   //首頁隨機餐廳
-  Future<LocationModel> fetchRestaurantLocations(String categoryId) async {
+  Future<LocationModel> fetchRestaurantLocations() async {
     try{
       Uri uri = Uri.http('onesblog.herokuapp.com', '/api/locations',
-          {'limit': '10', 'page': '1', 'random': '1', 'category_id': categoryId});
+          {'limit': '10', 'page': '1', 'random': '1', 'category_id': '1'});
       print(uri);
       http.Response response =
       await http.get(uri, headers: {'Accept' : 'application/json'}); //發送請求
       if(response.statusCode == 200){
         final jsonData = jsonDecode(response.body);
         LocationModel locations = LocationModel.fromJson(jsonData);
+        for(var i=0 ; i<locations.data.length;i++){
+          restaurantName.add(locations.data[i].name);
+        }
+        for(var i=0 ; i<locations.data.length;i++){
+          restaurantAvgScore.add(locations.data[i].avgScore);
+        }
+        for(var i=0 ; i<locations.data.length;i++){
+          restaurantAddress.add(locations.data[i].address);
+        }
+        for(var i=0 ; i<locations.data.length;i++){
+          restaurantPhone.add(locations.data[i].phone);
+        }
+        for(var i=0 ; i<locations.data.length;i++){
+          restaurantIntroduction.add(locations.data[i].introduction);
+        }
         return locations;
       }else{
         throw Exception("Failed to load");

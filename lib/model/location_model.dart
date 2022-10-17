@@ -83,8 +83,7 @@ class Meta {
   int to;
   int total;
 
-  Meta(
-      {required this.currentPage,
+  Meta({required this.currentPage,
         required this.from,
         required this.lastPage,
         required this.link,

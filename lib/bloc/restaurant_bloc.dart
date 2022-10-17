@@ -19,7 +19,7 @@ class RestaurantBloc extends Bloc<RestaurantEvent, RestaurantState> {
     if (event is FetchRestaurantEvent) {
       yield LoadingRestaurant();
       try {
-        LocationModel restaurants = await repo.fetchRestaurantLocations('1');
+        LocationModel restaurants = await repo.fetchRestaurantLocations();
         yield FetchedRestaurant(restaurants: restaurants);
       } catch (e) {
         yield RestaurantError(message: e.toString());

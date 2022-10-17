@@ -96,43 +96,45 @@ class _SpotsAreaState extends State<SpotsArea> {
             width: MediaQuery.of(context).size.width,
             child: BlocBuilder<LocationBloc, LocationState>(
                 builder: (context, state) {
-                  if (state is LoadingLocation) {
-                    return Column(
-                      children: [
-                        SizedBox(height: 20,),
-                        SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: CircularProgressIndicator(),
-                        )
-                      ],
-                    );
-                  } else if (state is FetchedLocation) {
-                    return ListView.builder(
-                        physics: new NeverScrollableScrollPhysics(),
-                        itemCount: state.locations.data.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              if (state.locations.data[index].categoryId == 2)
-                                CreateAreaList(
-                                    state.locations.data[index].name,
-                                    state.locations.data[index].address,
-                                    state.locations.data[index].avgScore,
-                                    'images/element/test.jpeg',
-                                    context,
-                                    LocationInformation(
-                                      index: index,
-                                      token: widget.token,
-                                    )),
-                            ],
-                          );
-                        });
-                  } else if (state is LocationError) {
-                    return ErrorWidget(state.message.toString());
-                  }
-                  return Container();
-                }),
+              if (state is LoadingLocation) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(),
+                    )
+                  ],
+                );
+              } else if (state is FetchedLocation) {
+                return ListView.builder(
+                    physics: new NeverScrollableScrollPhysics(),
+                    itemCount: state.locations.data.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          if (state.locations.data[index].categoryId == 2)
+                            CreateAreaList(
+                                state.locations.data[index].name,
+                                state.locations.data[index].address,
+                                state.locations.data[index].avgScore,
+                                'images/element/test.jpeg',
+                                context,
+                                LocationInformation(
+                                  index: index,
+                                  token: widget.token,
+                                )),
+                        ],
+                      );
+                    });
+              } else if (state is LocationError) {
+                return ErrorWidget(state.message.toString());
+              }
+              return Container();
+            }),
           ),
         ),
       ),

@@ -100,7 +100,9 @@ class _RestaurantAreaState extends State<RestaurantArea> {
               if (state is LoadingLocation) {
                 return Column(
                   children: [
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     SizedBox(
                       width: 50,
                       height: 50,

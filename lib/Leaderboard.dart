@@ -159,6 +159,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                                   create: (context) =>
                                                       LeaderBoardBloc(LocationRepository()),
                                                   child: StoreInformation(
+                                                    userId: state.leaderBoards.data[itemIndex].userId,
                                                     index: itemIndex,
                                                     token: widget.token,
                                                     categoryId: state.leaderBoards.data[itemIndex].categoryId,
@@ -300,7 +301,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,token: widget.token,categoryId: 0,)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(userId: 0,index: 0,token: widget.token,categoryId: 0,)));
                                 },
                               ),
                             );
@@ -356,7 +357,7 @@ class _LeaderboardState extends State<Leaderboard> {
                                   ),
                                 ),
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(index: 0,token: widget.token,categoryId: 0,)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>StoreInformation(userId: 0,index: 0,token: widget.token,categoryId: 0,)));
                                 },
                               ),
                             );

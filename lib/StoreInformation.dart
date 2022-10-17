@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ones_blog/SignOutMenu.dart';
 import 'package:ones_blog/bloc/restaurant_bloc.dart';
 import 'package:ones_blog/model/location_model.dart';
+import 'package:ones_blog/repository/locationScore_repo.dart';
 import 'package:ones_blog/repository/location_repo.dart';
 import 'bloc/lodging_bloc.dart';
 import 'bloc/spot_bloc.dart';
@@ -13,13 +14,14 @@ import 'function/ShareArticle.dart';
 import 'CreateMenu.dart';
 import 'HomePage.dart';
 import 'function/BuildDots.dart';
+import 'model/api_response.dart';
 
 class StoreInformation extends StatefulWidget {
-  // LocationModel locations;
-  final int index;
+  int userId;
+  int index;
   int categoryId;
   String token;
-  StoreInformation({required this.index, required this.categoryId, required this.token});
+  StoreInformation({required this.userId, required this.index, required this.categoryId, required this.token});
 
   @override
   _StoreInformationState createState() => _StoreInformationState();
@@ -48,7 +50,6 @@ class _StoreInformationState extends State<StoreInformation> {
     }else{
       return lodgingView(context, widget.index);
     }
-
   }
 
   Widget restaurantView(BuildContext context,int index){
@@ -161,7 +162,6 @@ class _StoreInformationState extends State<StoreInformation> {
                                   width: 40,
                                 ),
                                 Text(
-                                  // state.restaurants.data[index].name,
                                   LocationRepository.restaurantName[index],
                                   style: TextStyle(fontSize: 18),
                                 ),
@@ -633,10 +633,7 @@ class _StoreInformationState extends State<StoreInformation> {
                                                 minRating: 1,
                                                 direction: Axis.horizontal,
                                                 allowHalfRating: true,
-                                                itemSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                    9,
+                                                itemSize: MediaQuery.of(context).size.width / 9,
                                                 itemCount: 5,
                                                 itemPadding: EdgeInsets.symmetric(
                                                     horizontal: 2.0),

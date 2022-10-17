@@ -19,6 +19,7 @@ const locationsUrl = '/locations';
 const locationScores = '/location-scores';
 const postsUrl = '/posts';
 const commentsUrl = '/comments';
+const storeScoreUrl = '/location-scores';
 // const cities = '/cities';
 
 
